@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/button';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import { getSupabaseClient, hasSupabaseCredentials } from '../../lib/supabase-client';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 export default function WhitelistPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ export default function WhitelistPage() {
     twitter_verified: false
   });
 
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ success: false, error: null });
   const [supabaseError, setSupabaseError] = useState(null);
@@ -42,7 +44,28 @@ export default function WhitelistPage() {
     setIsSubmitting(true);
     setSubmitStatus({ success: false, error: null });
 
+    if (!turnstileToken) {
+      setSubmitStatus({ success: false, error: "Please complete the Turnstile verification" });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
+      // First verify the turnstile token
+      const verifyResponse = await fetch('/api/verify-turnstile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: turnstileToken }),
+      });
+
+      const verifyResult = await verifyResponse.json();
+      
+      if (!verifyResult.success) {
+        throw new Error('Turnstile verification failed. Please try again.');
+      }
+
       // Get Supabase client instance
       const supabase = getSupabaseClient();
 
@@ -169,11 +192,24 @@ export default function WhitelistPage() {
                       Error: {submitStatus.error}
                     </div>
                   )}
+                  
+                  <div className="flex justify-center my-4">
+                    <Turnstile
+                      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                      onSuccess={(token) => setTurnstileToken(token)}
+                      onError={() => {
+                        setTurnstileToken(null);
+                        setSubmitStatus({ success: false, error: "Turnstile verification failed" });
+                      }}
+                      onExpire={() => setTurnstileToken(null)}
+                    />
+                  </div>
+
                   <div className="pt-4">
                     <Button
                       type="submit"
                       className="w-full bg-primary hover:bg-primary/90 text-white py-3 animate-bounce-subtle"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !turnstileToken}
                     >
                       {isSubmitting ? 'Submitting...' : 'Submit Application'}
                     </Button>
