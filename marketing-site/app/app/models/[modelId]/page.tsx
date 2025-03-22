@@ -70,16 +70,14 @@ const ModelLogo = ({ src, alt, className = "", width = 120, height = 120 }: {
   height?: number; 
 }) => {
   return (
-    <div className={`relative overflow-hidden rounded-lg bg-black ${className}`} style={{ width, height }}>
+    <div className={`overflow-hidden rounded-lg bg-black ${className}`} style={{ width, height }}>
       <Image
         src={src}
         alt={alt}
-        fill
-        style={{ objectFit: 'cover' }}
-        className="p-0"
+        width={width}
+        height={height}
+        className="w-full h-full object-cover p-0"
         priority={true}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        loading="eager"
       />
     </div>
   );

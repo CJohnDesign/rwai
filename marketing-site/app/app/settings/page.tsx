@@ -48,7 +48,7 @@ export default function SettingsPage() {
               <span>Appearance</span>
             </CardTitle>
             <CardDescription>
-              Customize how RWAI looks on your device
+              Customize how RWAi looks on your device
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

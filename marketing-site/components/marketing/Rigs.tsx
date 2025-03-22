@@ -21,9 +21,10 @@ const Rigs = () => {
               <Image
                 src="/images/RWAi_00060_.png"
                 alt="AI Rig"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
+                width={1200}
+                height={800}
+                className="w-full h-full object-cover"
+                priority
               />
             </div>
           </div>

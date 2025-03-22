@@ -1,14 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import { getSupabaseClient, hasSupabaseCredentials } from '../../lib/supabase-client';
-import { Turnstile } from '@marsidev/react-turnstile';
+import { ErrorEasterEgg } from '../../components/ui/error-easter-egg';
+
+// Debounce utility
+const debounce = (fn: Function, ms = 300) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
 
 export default function WhitelistPage() {
   const [formData, setFormData] = useState({
@@ -21,9 +29,17 @@ export default function WhitelistPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ success: false, error: null });
   const [supabaseError, setSupabaseError] = useState(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [formStartEventSent, setFormStartEventSent] = useState(false);
+
+  const initRef = useRef(false);
+  const unloadingRef = useRef(false);
 
   // Check for Supabase initialization errors
   useEffect(() => {
+    if (initRef.current) return; // Prevent double initialization
+    initRef.current = true;
+
     if (!hasSupabaseCredentials()) {
       setSupabaseError(
         'Unable to connect to our database. Please try again later or contact support.'
@@ -31,16 +47,81 @@ export default function WhitelistPage() {
     }
   }, []);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
+  // Push event to dataLayer with ref check
+  const pushToDataLayer = useCallback((eventData: any) => {
+    if (typeof window === 'undefined') return;
+    
+    const w = window as any;
+    if (w.dataLayer) {
+      // Add a unique timestamp to prevent duplicate events
+      w.dataLayer.push({
+        ...eventData,
+        timestamp: new Date().toISOString(),
+        event_id: Math.random().toString(36).substring(2, 15)
+      });
+    } else {
+      console.warn('DataLayer not found');
+    }
+  }, []);
+
+  // Track form abandonment with ref
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasInteracted && !submitStatus.success && !unloadingRef.current) {
+        unloadingRef.current = true;
+        pushToDataLayer({
+          'event': 'whitelist_form_abandon',
+          'event_category': 'Whitelist',
+          'event_action': 'abandon',
+          'form_id': 'whitelist-application',
+          'form_type': 'whitelist',
+          'has_partial_data': !!(formData.wallet_address || formData.email)
+        });
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasInteracted, submitStatus.success, formData, pushToDataLayer]);
+
+  // Debounced form start event with ref check
+  const formStartRef = useRef(false);
+  const sendFormStartEvent = useCallback(
+    debounce(() => {
+      if (!formStartEventSent && !formStartRef.current) {
+        formStartRef.current = true;
+        setFormStartEventSent(true);
+        pushToDataLayer({
+          'event': 'whitelist_form_start',
+          'event_category': 'Whitelist',
+          'event_action': 'start',
+          'form_id': 'whitelist-application',
+          'form_type': 'whitelist'
+        });
+      }
+    }, 500),
+    [formStartEventSent, pushToDataLayer]
+  );
+
+  // Consolidated change handler for all form inputs
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value, type, checked } = e.target;
+    
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      sendFormStartEvent();
+    }
+
     setFormData(prev => ({
       ...prev,
-      [id]: value
+      [id]: type === 'checkbox' ? checked : value
     }));
-  };
+  }, [hasInteracted, sendFormStartEvent]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    
     setIsSubmitting(true);
     setSubmitStatus({ success: false, error: null });
 
@@ -51,45 +132,34 @@ export default function WhitelistPage() {
     }
 
     try {
-      // First verify the turnstile token
-      const verifyResponse = await fetch('/api/verify-turnstile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token: turnstileToken }),
-      });
-
-      const verifyResult = await verifyResponse.json();
-      
-      if (!verifyResult.success) {
-        throw new Error('Turnstile verification failed. Please try again.');
-      }
-
-      // Get Supabase client instance
       const supabase = getSupabaseClient();
-
-      // Check if Supabase is properly initialized
       if (!supabase) {
         throw new Error('Database connection is not available. Please try again later.');
       }
 
-      // Insert the data into your Supabase table
       const { data, error } = await supabase
-        .from('whitelist_applications') // Replace with your actual table name
-        .insert([
-          {
-            email: formData.email || null,
-            wallet_address: formData.wallet_address,
-            twitter_verified: formData.twitter_verified
-            // created_at will be handled by Supabase automatically
-          }
-        ]);
+        .from('whitelist_applications')
+        .insert([{
+          email: formData.email || null,
+          wallet_address: formData.wallet_address,
+          twitter_verified: formData.twitter_verified
+        }]);
 
       if (error) throw error;
 
+      pushToDataLayer({
+        'event': 'whitelist_submission',
+        'event_category': 'Whitelist',
+        'event_action': 'submit',
+        'event_label': 'success',
+        'form_id': 'whitelist-application',
+        'form_type': 'whitelist',
+        'has_email': !!formData.email,
+        'has_twitter': formData.twitter_verified,
+        'timestamp': new Date().toISOString()
+      });
+
       setSubmitStatus({ success: true, error: null });
-      // Reset form after successful submission
       setFormData({
         wallet_address: '',
         email: '',
@@ -122,14 +192,7 @@ export default function WhitelistPage() {
             <div className="max-w-2xl mx-auto bg-card rounded-xl p-8 border border-border shadow-lg animate-slide-up animation-delay-300">
               {supabaseError ? (
                 <div className="text-center py-8">
-                  <h3 className="text-2xl font-bold text-red-500 mb-4">Service Temporarily Unavailable</h3>
-                  <p className="mb-6">{supabaseError}</p>
-                  <p className="mb-6">Please check back later or contact support for assistance.</p>
-                  <Link href="/">
-                    <Button className="bg-primary hover:bg-primary/90 text-white">
-                      Return to Home Page
-                    </Button>
-                  </Link>
+                  <ErrorEasterEgg />
                 </div>
               ) : submitStatus.success ? (
                 <div className="text-center py-8">
@@ -146,7 +209,7 @@ export default function WhitelistPage() {
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="space-y-2">
                     <label htmlFor="wallet_address" className="block text-sm font-medium">
-                      Wallet Address <span className="text-red-500">*</span>
+                      ETH Wallet Address <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -154,7 +217,7 @@ export default function WhitelistPage() {
                       value={formData.wallet_address}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      placeholder="Enter your crypto wallet address"
+                      placeholder="Enter your ETH wallet address"
                       required
                     />
                   </div>
@@ -177,7 +240,7 @@ export default function WhitelistPage() {
                         type="checkbox"
                         id="twitter_verified"
                         checked={formData.twitter_verified}
-                        onChange={(e) => setFormData({ ...formData, twitter_verified: e.target.checked })}
+                        onChange={handleChange}
                         className="rounded border-gray-300 text-primary focus:ring-primary"
                         required
                       />

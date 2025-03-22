@@ -71,8 +71,6 @@ const ModelCard = ({ model, priority = false, className = "" }: { model: ModelTy
   return (
     <a 
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
       className={`group block relative rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl ${className}`}
       onClick={(e) => {
         // Log click for debugging
@@ -87,8 +85,9 @@ const ModelCard = ({ model, priority = false, className = "" }: { model: ModelTy
         <Image
           src={model.image}
           alt={model.name}
-          fill
-          className="object-cover"
+          width={800}
+          height={600}
+          className="w-full h-full object-cover"
           priority={priority}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -117,7 +116,7 @@ const Models = () => {
           </h2>
           
           <Button asChild variant="outline" className="self-start md:self-auto border-gray-300 dark:border-gray-700 rounded-full px-6">
-            <a href={getAppUrl('models')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+            <a href={getAppUrl('models')} className="flex items-center gap-2">
               View Models
               <ChevronRight className="h-4 w-4" />
             </a>

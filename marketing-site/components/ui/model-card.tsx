@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
+import Image from "next/image";
 
 interface ModelCardProps {
   id: string;
@@ -26,10 +27,12 @@ export function ModelCard({ id, name, description, tags, parameters, image }: Mo
     }
     
     return (
-      <img 
+      <Image 
         src={image} 
         alt={`${name} logo`} 
-        className="h-24 w-24 object-contain"
+        width={96}
+        height={96}
+        className="object-contain"
         onError={() => setImgError(true)}
       />
     );

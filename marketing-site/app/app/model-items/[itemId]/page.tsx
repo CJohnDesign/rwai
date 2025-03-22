@@ -36,9 +36,6 @@ export default function ModelItemPage({ params }: { params: { itemId: string } }
       )}
       
       <div className="mt-8">
-        <Link href="/model-debug" className="text-blue-500 hover:underline mr-4">
-          Back to Debug Page
-        </Link>
         <Link href="/models" className="text-blue-500 hover:underline">
           Back to Models
         </Link>

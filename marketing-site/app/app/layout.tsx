@@ -17,6 +17,7 @@ import {
 } from "../../src/components/ui/dropdown-menu";
 import Link from 'next/link';
 import '../globals.css';
+import { getMainUrl } from '../../lib/url-utils';
 
 // Import Head and useEffect
 import Head from 'next/head';
@@ -141,7 +142,9 @@ export default function AppLayout({
                 
                 {/* Logo */}
                 <div className="h-6 md:h-7">
-                  <Logo height={24} className="md:h-7" />
+                  <a href={getMainUrl()} className="block">
+                    <Logo height={24} className="md:h-7" />
+                  </a>
                 </div>
               </div>
               
@@ -151,12 +154,6 @@ export default function AppLayout({
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium text-green-500 dark:text-green-400">489.12</span>
                 </Link>
-                
-                {/* Theme toggle */}
-                <ThemeToggle 
-                  variant="icon" 
-                  className="text-muted-foreground hover:text-foreground hover:bg-muted focus:outline-none rounded-full transition-colors"
-                />
                 
                 {/* Notification bell with dropdown */}
                 <DropdownMenu>

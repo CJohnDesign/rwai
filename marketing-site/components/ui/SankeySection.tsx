@@ -23,7 +23,7 @@ const SankeySection: React.FC = () => {
         <div className="max-w-3xl mx-auto mb-12 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 font-sora text-gray-900 dark:text-white">Investment Flow & Yield Distribution</h2>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-            Illustrates the flow of investment into fractional ownership, GPU rig operations, and yield distribution to $rwai token holders, emphasizing the movement of funds and returns in USDC.
+            Illustrates the flow of investment into fractional ownership, GPU rig operations, and yield distribution to $RWAi token holders, emphasizing the movement of funds and returns in USDC.
           </p>
           
           {/* Sankey Legend */}

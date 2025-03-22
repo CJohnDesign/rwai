@@ -13,6 +13,8 @@ import {
   HelpCircle
 } from "lucide-react";
 import { ThemeToggle } from "../../components/ui/theme-toggle";
+import { Logo } from '../../components/ui/logo';
+import { getMainUrl } from '../../lib/url-utils';
 
 interface NavigationLink {
   href: string;
@@ -71,7 +73,11 @@ export function SidebarNav({ navigationLinks }: SidebarNavProps) {
         <div className="flex flex-col h-full">
           {/* Sidebar header */}
           <div className="flex items-center justify-between p-4 border-b border-border">
-            <div className="text-foreground text-xl font-semibold">RWAI</div>
+            <div className="text-foreground">
+              <a href={getMainUrl()} className="block">
+                <Logo height={24} className="text-foreground" />
+              </a>
+            </div>
             <button
               className="p-1 text-muted-foreground hover:text-foreground focus:outline-none"
               onClick={toggleSidebar}

@@ -20,21 +20,21 @@ const Whitelist = () => {
             </p>
             
             <p className="text-lg text-gray-200 animate-slide-up animation-delay-300">
-              By delivering inference and other AI optimized compute services to the rapidly growing AI market, our vertically integrated business model monetizes AI workload to create a rapid scaling ecosystem free from traditional high-capital-expenditure constraints, while generating an ongoing yield paid in USDC to our $rwai token holders.
+              By delivering inference and other AI optimized compute services to the rapidly growing AI market, our vertically integrated business model monetizes AI workload to create a rapid scaling ecosystem free from traditional high-capital-expenditure constraints, while generating an ongoing yield paid in USDC to our $RWAi token holders.
             </p>
           </div>
           
           <div className="lg:ml-auto lg:max-w-md">
             <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-xl p-8 border border-gray-200 dark:border-gray-800 shadow-xl animate-slide-up animation-delay-400">
-              <h3 className="text-xl mb-4 text-gray-900 dark:text-white">$rwai Whitelist</h3>
+              <h3 className="text-xl mb-4 text-gray-900 dark:text-white">$RWAi Whitelist</h3>
               <h4 className="text-2xl mb-6 text-gray-900 dark:text-white">Tokenizing Enterprise-Grade GPUs and Their Cash Flow</h4>
               
-              <div className="mb-4 text-gray-900 dark:text-white">Fractionalized into the $rwai Token</div>
+              <div className="mb-4 text-gray-900 dark:text-white">Fractionalized into the $RWAi Token</div>
               
               <ul className="space-y-4 mb-6">
                 <li className="flex items-start gap-3">
                   <span className="text-primary text-xl">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">Each High-Performance RIG is fractionalized into $rwai Tokens on Ethereum mainnet.</span>
+                  <span className="text-gray-700 dark:text-gray-300">Each High-Performance RIG is fractionalized into $RWAi Tokens on Ethereum mainnet.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-primary text-xl">•</span>
@@ -42,7 +42,7 @@ const Whitelist = () => {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-primary text-xl">•</span>
-                  <span className="text-gray-700 dark:text-gray-300">Plus additional ecosystem partner opportunities for $rwai token holders.</span>
+                  <span className="text-gray-700 dark:text-gray-300">Plus additional ecosystem partner opportunities for $RWAi token holders.</span>
                 </li>
               </ul>
               

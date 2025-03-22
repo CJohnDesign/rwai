@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "../../../../components/ui/badge";
 import gpusData from "../../../../src/data/gpus.json";
 import { WhitelistOverlay } from "../../../../components/app-dashboard/whitelist-overlay";
+import Image from "next/image";
 
 // Base path for static assets in subdomains
 const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "http://localhost:3000";
@@ -83,15 +84,18 @@ export default function GPUDetailPage() {
         
         <div className="flex flex-col gap-8">
           {/* Hero section with full-width image */}
-          <div className="w-full h-64 md:h-80 bg-muted/50 rounded-xl overflow-hidden relative">
+          <div className="w-full h-64 md:h-80 bg-muted/50 rounded-xl overflow-hidden">
             {imgError ? (
               <div className="flex items-center justify-center bg-muted h-full w-full">
                 <span className="text-6xl font-bold text-muted-foreground">{gpu.name.charAt(0)}</span>
               </div>
             ) : (
-              <img 
+              <Image 
                 src={imageUrl} 
                 alt={gpu.name} 
+                width={1200}
+                height={800}
+                priority
                 className="w-full h-full object-cover"
                 onError={() => setImgError(true)}
               />

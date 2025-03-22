@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -73,10 +74,12 @@ export function UserAccountDropdown({
         <DropdownMenuTrigger asChild>
           <button className="flex items-center gap-2 focus:outline-none p-1.5 rounded-full hover:bg-muted dark:hover:bg-gray-800 transition-colors border border-transparent hover:border-border dark:hover:border-gray-700">
             {userImageUrl ? (
-              <img
+              <Image
                 src={userImageUrl}
                 alt={userName}
-                className="h-8 w-8 rounded-full object-cover"
+                width={32}
+                height={32}
+                className="rounded-full object-cover"
               />
             ) : (
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted dark:bg-gray-700 text-muted-foreground dark:text-gray-300">
@@ -158,10 +161,12 @@ export function UserAccountDropdown({
             <div className="flex items-center justify-between p-5 border-b border-border">
               <div className="flex items-center gap-3">
                 {userImageUrl ? (
-                  <img
+                  <Image
                     src={userImageUrl}
                     alt={userName}
-                    className="h-12 w-12 rounded-full object-cover"
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
                   />
                 ) : (
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground border-2 border-muted shadow-sm">

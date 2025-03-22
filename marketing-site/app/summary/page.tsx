@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -7,11 +9,7 @@ import TokenSaleSection from '../../components/ui/TokenSaleSection';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/tabs";
 import AnimatedQuote from '../../components/ui/AnimatedQuote';
 import quotes from '../../data/quotes.json';
-
-export const metadata = {
-  title: 'Executive Summary | RWAi',
-  description: 'Executive summary of RWAi - the first platform for fractional ownership of AI GPU rigs',
-};
+import { ResponsiveTable, ResponsiveTableBody, ResponsiveTableRow, ResponsiveTableCell } from "../../components/ui/responsive-table";
 
 export default function SummaryPage() {
   return (
@@ -155,57 +153,35 @@ export default function SummaryPage() {
                       </TabsList>
                       
                       <TabsContent value="table" className="mt-2">
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead>
-                              <tr>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Metric</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">33% Utilization</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">50% Utilization</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">80% Utilization</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                              <tr>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Sale Revenue</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$25,000</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$25,000</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$25,000</td>
-                              </tr>
-                              <tr>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Rental Revenue</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$18,501</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$28,032</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$44,851</td>
-                              </tr>
-                              <tr>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Inference Revenue</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$199,812</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$302,746</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$484,393</td>
-                              </tr>
-                              <tr>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Total Revenue</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$243,313</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$355,778</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$554,244</td>
-                              </tr>
-                              <tr>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Expenses</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$21,600.00</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$21,600.00</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$21,600.00</td>
-                              </tr>
-                              <tr>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">NOI</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">$221,713</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">$334,178</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">$532,644</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">*At scale, with a mix of multiple server models, values may vary</p>
+                        <ResponsiveTable
+                          headers={[
+                            "Metric",
+                            "33% Utilization",
+                            "50% Utilization",
+                            "80% Utilization"
+                          ]}
+                        >
+                          <ResponsiveTableBody>
+                            <ResponsiveTableRow>
+                              <ResponsiveTableCell>Total Revenue</ResponsiveTableCell>
+                              <ResponsiveTableCell>$243,313</ResponsiveTableCell>
+                              <ResponsiveTableCell>$355,778</ResponsiveTableCell>
+                              <ResponsiveTableCell>$554,244</ResponsiveTableCell>
+                            </ResponsiveTableRow>
+                            <ResponsiveTableRow>
+                              <ResponsiveTableCell>Expenses</ResponsiveTableCell>
+                              <ResponsiveTableCell>$21,600.00</ResponsiveTableCell>
+                              <ResponsiveTableCell>$21,600.00</ResponsiveTableCell>
+                              <ResponsiveTableCell>$21,600.00</ResponsiveTableCell>
+                            </ResponsiveTableRow>
+                            <ResponsiveTableRow>
+                              <ResponsiveTableCell>NOI</ResponsiveTableCell>
+                              <ResponsiveTableCell>$221,713</ResponsiveTableCell>
+                              <ResponsiveTableCell>$334,178</ResponsiveTableCell>
+                              <ResponsiveTableCell>$532,644</ResponsiveTableCell>
+                            </ResponsiveTableRow>
+                          </ResponsiveTableBody>
+                        </ResponsiveTable>
                       </TabsContent>
                       
                       <TabsContent value="chart" className="mt-2">
@@ -295,159 +271,163 @@ export default function SummaryPage() {
                     
                     {/* Table 2: 5-Year Cash Flow Projection */}
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-8">
-                      <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white pt-0">Table 2: 5-Year Cash Flow Projection (50% Utilization) Per H100 Server</h4>
-                      <p className="text-sm mb-4 text-gray-700 dark:text-gray-300">Fractional GPU Token Holder Metrics (USD Lease)</p>
+                      <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white pt-0">
+                        Table 2: 5-Year Cash Flow Projection (50% Utilization) Per H100 Server
+                      </h4>
+                      <p className="text-sm mb-4 text-gray-700 dark:text-gray-300">
+                        Fractional GPU Token Holder Metrics (USD Lease)
+                      </p>
                       
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                          <thead>
-                            <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Year</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Revenue Sale</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Revenue Operations</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Operations Expense</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Net Cash Flow</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">DCF</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$225,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$225,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$225,000.00</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">1</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$400,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$243,313</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$18,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$625,313</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$568,466.47</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">2</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$243,313</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$18,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$225,313</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$186,209.19</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">3</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$355,778</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$18,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$337,778</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$253,777.61</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">4</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$355,778</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$18,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$337,778</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$230,706.92</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">5</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$554,244</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$18,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$536,244</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$332,965.33</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Salvage Repurchase</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"></td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"></td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"></td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$80,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$49,673.71</td>
-                            </tr>
-                            <tr className="bg-gray-50 dark:bg-gray-700">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">Total</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$400,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$1,752,426</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">-$315,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$1,757,426</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$1,597,660</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">*At scale, with a mix of multiple server models, values may vary</p>
+                      <ResponsiveTable
+                        headers={[
+                          "Year",
+                          "Revenue Sale",
+                          "Revenue Operations",
+                          "Operations Expense",
+                          "Net Cash Flow",
+                          "DCF"
+                        ]}
+                      >
+                        <ResponsiveTableBody>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$225,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$225,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$225,000.00</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>1</ResponsiveTableCell>
+                            <ResponsiveTableCell>$400,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$243,313</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$18,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$625,313</ResponsiveTableCell>
+                            <ResponsiveTableCell>$568,466.47</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>2</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$243,313</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$18,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$225,313</ResponsiveTableCell>
+                            <ResponsiveTableCell>$186,209.19</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>3</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$355,778</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$18,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$337,778</ResponsiveTableCell>
+                            <ResponsiveTableCell>$253,777.61</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>4</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$355,778</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$18,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$337,778</ResponsiveTableCell>
+                            <ResponsiveTableCell>$230,706.92</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>5</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$554,244</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$18,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$536,244</ResponsiveTableCell>
+                            <ResponsiveTableCell>$332,965.33</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>Salvage Repurchase</ResponsiveTableCell>
+                            <ResponsiveTableCell></ResponsiveTableCell>
+                            <ResponsiveTableCell></ResponsiveTableCell>
+                            <ResponsiveTableCell></ResponsiveTableCell>
+                            <ResponsiveTableCell>-$80,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$49,673.71</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow className="bg-gray-50 dark:bg-gray-700">
+                            <ResponsiveTableCell className="font-bold">Total</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$400,000</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$1,752,426</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">-$315,000</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$1,757,426</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$1,597,660</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                        </ResponsiveTableBody>
+                      </ResponsiveTable>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+                        *At scale, with a mix of multiple server models, values may vary
+                      </p>
                     </div>
                     
                     {/* Table 3: Fractional GPU Token Holder Metrics */}
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mt-8">
-                      <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white pt-0">Table 3: Fractional GPU Token Holder Metrics 5 Year Cash Flow from NOI share</h4>
+                      <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white pt-0">
+                        Table 3: Fractional GPU Token Holder Metrics 5 Year Cash Flow from NOI share
+                      </h4>
                       
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                          <thead>
-                            <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Year</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Revenue from NOI Share</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Net Cash Flow</th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">DCF</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$0</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$400,000.00</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">-$400,000.00</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">1</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$202,782</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$202,782</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$184,347.10</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">2</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$202,782</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$202,782</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$167,588.27</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">3</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$304,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$304,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$228,399.85</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">4</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$304,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$304,000</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$207,636.23</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">5</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$482,620</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$482,620</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$299,668.80</td>
-                            </tr>
-                            <tr>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Salvage Value</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"></td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$80,000.00</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">$49,673.71</td>
-                            </tr>
-                            <tr className="bg-gray-50 dark:bg-gray-700">
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">Total</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$1,496,184</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$1,176,183.62</td>
-                              <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">$773,677.59</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">*At scale, with a mix of multiple server models, values may vary</p>
+                      <ResponsiveTable
+                        headers={[
+                          "Year",
+                          "Revenue from NOI Share",
+                          "Net Cash Flow",
+                          "DCF"
+                        ]}
+                      >
+                        <ResponsiveTableBody>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>0</ResponsiveTableCell>
+                            <ResponsiveTableCell>$0</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$400,000.00</ResponsiveTableCell>
+                            <ResponsiveTableCell>-$400,000.00</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>1</ResponsiveTableCell>
+                            <ResponsiveTableCell>$202,782</ResponsiveTableCell>
+                            <ResponsiveTableCell>$202,782</ResponsiveTableCell>
+                            <ResponsiveTableCell>$184,347.10</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>2</ResponsiveTableCell>
+                            <ResponsiveTableCell>$202,782</ResponsiveTableCell>
+                            <ResponsiveTableCell>$202,782</ResponsiveTableCell>
+                            <ResponsiveTableCell>$167,588.27</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>3</ResponsiveTableCell>
+                            <ResponsiveTableCell>$304,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$304,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$228,399.85</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>4</ResponsiveTableCell>
+                            <ResponsiveTableCell>$304,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$304,000</ResponsiveTableCell>
+                            <ResponsiveTableCell>$207,636.23</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>5</ResponsiveTableCell>
+                            <ResponsiveTableCell>$482,620</ResponsiveTableCell>
+                            <ResponsiveTableCell>$482,620</ResponsiveTableCell>
+                            <ResponsiveTableCell>$299,668.80</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow>
+                            <ResponsiveTableCell>Salvage Value</ResponsiveTableCell>
+                            <ResponsiveTableCell></ResponsiveTableCell>
+                            <ResponsiveTableCell>$80,000.00</ResponsiveTableCell>
+                            <ResponsiveTableCell>$49,673.71</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                          <ResponsiveTableRow className="bg-gray-50 dark:bg-gray-700">
+                            <ResponsiveTableCell className="font-bold">Total</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$1,496,184</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$1,176,183.62</ResponsiveTableCell>
+                            <ResponsiveTableCell className="font-bold">$773,677.59</ResponsiveTableCell>
+                          </ResponsiveTableRow>
+                        </ResponsiveTableBody>
+                      </ResponsiveTable>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+                        *At scale, with a mix of multiple server models, values may vary
+                      </p>
                     </div>
                     
                     <div className="mt-8">
@@ -519,7 +499,7 @@ export default function SummaryPage() {
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
                     <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Chris Johnston - Product Designer</h3>
                     <p className="text-gray-700 dark:text-gray-300">
-                      A product designer bridging creativity with machine intelligence, Chris leads Applied AI and Community Relations, ensuring AI feels like an intuitive extension of human creativity. With over 15 years of experience in scalable product development and AI-driven solutions, he previously directed product teams delivering custom software for venture-backed and pre-exit companies. Chris frequently contributes to South Florida PBS, translating AI advancements into accessible insights. He also founded AI Uncorked, a community initiative hosting interactive generative AI discussions, and is pioneering "vibe coding" to craft immersive, human-centered experiences.
+                      A product designer bridging creativity with machine intelligence, Chris leads Applied AI and Community Relations, ensuring AI feels like an intuitive extension of human creativity. With over 15 years of experience in scalable product development, he previously directed product teams delivering custom software for venture-backed and pre-exit companies. Chris frequently contributes to South Florida PBS, translating AI advancements into accessible insights. He is pioneering "vibe coding" as a craft to create immersive, human-centered experiences.
                     </p>
                   </div>
                   

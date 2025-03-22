@@ -7,8 +7,8 @@ const Footer = () => {
   return (
     <footer className="bg-background py-16 border-t border-border">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div className="md:col-span-2">
             <Link href="/" className="inline-block mb-6">
               <Image 
                 src="/images/RWAi_logo-xs.png" 
@@ -23,8 +23,8 @@ const Footer = () => {
             </p>
           </div>
           
-          <div className="flex flex-col items-end">
-            <div className="text-right">
+          <div className="flex flex-col">
+            <div>
               <h3 className="font-bold text-lg mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
@@ -40,6 +40,24 @@ const Footer = () => {
                 <li>
                   <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">
                     Blog
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            <div>
+              <h3 className="font-bold text-lg mb-4">Resources</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms-of-service" className="text-muted-foreground hover:text-primary transition-colors">
+                    Terms of Service
                   </Link>
                 </li>
               </ul>
@@ -62,12 +80,6 @@ const Footer = () => {
               fgColor="currentColor"
               className="text-muted-foreground hover:text-primary transition-colors"
             />
-            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              Terms of Service
-            </Link>
           </div>
         </div>
       </div>

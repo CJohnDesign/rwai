@@ -5,8 +5,8 @@ import { Search, Filter, ArrowUpDown, Info, ExternalLink, ChevronRight, ChevronL
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card";
+import { ResponsiveTable, ResponsiveTableBody, ResponsiveTableRow, ResponsiveTableCell } from "../../../components/ui/responsive-table";
 import modelsData from "../../../src/data/models.json";
 
 // Base path for static assets in subdomains
@@ -101,11 +101,12 @@ const ModelCard = ({ id, name, description, tags, parameters, image }: ModelCard
   return (
     <div className="flex flex-col rounded-xl border border-border bg-card hover:border-primary/50 transition-colors overflow-hidden w-full h-full dark:bg-card">
       {/* Full-width top half image with absolutely no padding */}
-      <div className="h-48 w-full bg-muted/50 overflow-hidden dark:bg-muted/30">
-        <img 
+      <div className="h-48 w-full bg-muted/50 overflow-hidden dark:bg-muted/30 relative">
+        <Image 
           src={imageUrl} 
           alt={name}
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
           onError={() => setImgError(true)}
         />
       </div>
@@ -265,80 +266,48 @@ export default function ModelsPage() {
       <div className="w-full px-4">
         <div className="text-2xl mb-6">All Models</div>
         <Card>
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-lg">Available Models</CardTitle>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <span>Sort by:</span>
-                  <button
-                    className={`flex items-center gap-1 px-2 py-1 rounded hover:bg-muted ${sortBy === "name" ? "text-foreground font-medium" : ""}`}
-                    onClick={() => handleSort("name")}
-                  >
-                    Name
-                    {sortBy === "name" && (
-                      <ArrowUpDown className={`h-3.5 w-3.5 ${sortDirection === "asc" ? "rotate-0" : "rotate-180"}`} />
-                    )}
-                  </button>
-                  <button
-                    className={`flex items-center gap-1 px-2 py-1 rounded hover:bg-muted ${sortBy === "releaseDate" ? "text-foreground font-medium" : ""}`}
-                    onClick={() => handleSort("releaseDate")}
-                  >
-                    Release Date
-                    {sortBy === "releaseDate" && (
-                      <ArrowUpDown className={`h-3.5 w-3.5 ${sortDirection === "asc" ? "rotate-0" : "rotate-180"}`} />
-                    )}
-                  </button>
-                  <button
-                    className={`flex items-center gap-1 px-2 py-1 rounded hover:bg-muted ${sortBy === "parameters" ? "text-foreground font-medium" : ""}`}
-                    onClick={() => handleSort("parameters")}
-                  >
-                    Parameters
-                    {sortBy === "parameters" && (
-                      <ArrowUpDown className={`h-3.5 w-3.5 ${sortDirection === "asc" ? "rotate-0" : "rotate-180"}`} />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
+          <CardHeader>
+            <CardTitle>All Models</CardTitle>
+            <CardDescription>
+              Browse and use our available AI models
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[200px]">Model</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Parameters</TableHead>
-                  <TableHead>Release Date</TableHead>
-                  <TableHead>License</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <ResponsiveTable
+              headers={[
+                "Model",
+                "Category",
+                "Parameters",
+                "Release Date",
+                "License",
+                "Action"
+              ]}
+            >
+              <ResponsiveTableBody>
                 {currentModels.length > 0 ? (
                   currentModels.map(model => (
-                    <TableRow key={model.id}>
-                      <TableCell className="font-medium">
+                    <ResponsiveTableRow key={model.id}>
+                      <ResponsiveTableCell>
                         <div>
                           <div className="font-medium">{model.name}</div>
                           <div className="text-xs text-muted-foreground line-clamp-1">{model.description}</div>
                         </div>
-                      </TableCell>
-                      <TableCell>
+                      </ResponsiveTableCell>
+                      <ResponsiveTableCell>
                         <span className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground capitalize">
                           {model.category}
                         </span>
-                      </TableCell>
-                      <TableCell>
+                      </ResponsiveTableCell>
+                      <ResponsiveTableCell>
                         {model.parameters.length > 1 
                           ? `${Math.min(...model.parameters)}-${Math.max(...model.parameters)}B` 
                           : `${model.parameters[0]}B`}
-                      </TableCell>
-                      <TableCell>{formatDate(model.releaseDate)}</TableCell>
-                      <TableCell className="max-w-[200px] truncate" title={model.license}>
+                      </ResponsiveTableCell>
+                      <ResponsiveTableCell>{formatDate(model.releaseDate)}</ResponsiveTableCell>
+                      <ResponsiveTableCell className="max-w-[200px] truncate" title={model.license}>
                         {model.license}
-                      </TableCell>
-                      <TableCell className="text-right">
+                      </ResponsiveTableCell>
+                      <ResponsiveTableCell className="text-right">
                         <Link 
                           href={`/models/${model.id}`}
                           className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary bg-transparent text-primary hover:bg-primary/10 h-8 px-3 py-2"
@@ -346,18 +315,18 @@ export default function ModelsPage() {
                           Use
                           <ChevronRight className="ml-1 h-4 w-4" />
                         </Link>
-                      </TableCell>
-                    </TableRow>
+                      </ResponsiveTableCell>
+                    </ResponsiveTableRow>
                   ))
                 ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-6">
+                  <ResponsiveTableRow>
+                    <ResponsiveTableCell colSpan={6} className="text-center py-6">
                       <p className="text-muted-foreground">No models found matching your criteria.</p>
-                    </TableCell>
-                  </TableRow>
+                    </ResponsiveTableCell>
+                  </ResponsiveTableRow>
                 )}
-              </TableBody>
-            </Table>
+              </ResponsiveTableBody>
+            </ResponsiveTable>
             
             {/* Pagination */}
             {totalPages > 1 && (

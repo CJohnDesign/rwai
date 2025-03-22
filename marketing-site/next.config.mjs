@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   // Remove basePath as it can interfere with subdomain routing
   // basePath: process.env.NODE_ENV === 'production' ? '/app' : '',
   trailingSlash: false,
@@ -13,7 +13,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['localhost', 'app.localhost', 'rwai-eight.vercel.app', 'app.rwai-eight.vercel.app'],
+    domains: ['localhost', 'app.localhost', 'rwai-eight.vercel.app', 'app.rwai-eight.vercel.app', 'rwai.xyz', 'app.rwai.xyz'],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

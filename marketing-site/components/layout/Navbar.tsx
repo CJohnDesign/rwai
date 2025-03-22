@@ -22,7 +22,7 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-950 py-4 px-6 md:px-12 border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="w-full flex items-center justify-between">
           {/* Left section - Hamburger and Logo */}
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center gap-4">
             {/* Hamburger menu button - always visible */}
             <Button
               variant="ghost"
@@ -51,7 +51,7 @@ const Navbar = () => {
           </div>
           
           {/* Right section - X icon and Launch App button */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-4">
             <SocialIcon 
               url="https://x.com/rwai_xyz" 
               network="x"
@@ -62,10 +62,9 @@ const Navbar = () => {
               fgColor="currentColor"
               className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
             />
-            {/* Launch App button - now visible on all screen sizes */}
             <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-              <a href={getAppUrl('models')} target="_blank" rel="noopener noreferrer">
-                <span className="hidden md:inline">Launch </span>App
+              <a href={getAppUrl('models')}>
+                <span className="hidden md:inline -mr-[3px]">Launch</span>App
               </a>
             </Button>
           </div>

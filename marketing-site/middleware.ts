@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
   matcher: [
-    // Match all request paths
-    '/(.*)',
+    // Match all paths except internals and static files
+    '/((?!api|_next|_static|_vercel|[\\w-]+\\.\\w+).*)',
   ],
 };
+
+// Fast check for tracking parameters
+function hasTrackingParams(urlString: string): boolean {
+  return /_g[al]/.test(urlString);
+}
 
 export default function middleware(request: NextRequest) {
   const url = request.nextUrl;
@@ -37,10 +42,43 @@ export default function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Create the rewrite URL
-    const newUrl = new URL(`/app${pathname}`, request.url);
-    console.log(`➡️ Rewriting to: ${newUrl.toString()}`);
+    // If we have tracking parameters, handle them
+    if (hasTrackingParams(request.url)) {
+      // Fast parameter extraction using Set for O(1) lookup
+      const TRACKING_PARAMS = new Set(['_gl', '_ga', '_ga_3RT06YPS1M']);
+      const trackingParams: Record<string, string> = {};
+      
+      // Single iteration over search params
+      for (const [key, value] of url.searchParams.entries()) {
+        if (TRACKING_PARAMS.has(key)) {
+          trackingParams[key] = value;
+          url.searchParams.delete(key);
+        }
+      }
 
+      // Create clean URL preserving the original pathname
+      const cleanUrl = new URL(pathname + url.search, request.url);
+      console.log(`➡️ Redirecting to clean URL: ${cleanUrl.toString()}`);
+      const response = NextResponse.redirect(cleanUrl);
+
+      // Batch cookie operations
+      Object.entries(trackingParams).forEach(([param, value]) => {
+        console.log(`🍪 Setting cookie: ${param}`);
+        response.cookies.set(param, value, {
+          domain: '.rwai.xyz',
+          path: '/',
+          secure: true,
+          sameSite: 'none',
+          maxAge: 2592000 // 30 days
+        });
+      });
+
+      return response;
+    }
+
+    // For app subdomain without tracking params, rewrite to app directory
+    const newUrl = new URL(`/app${pathname}`, request.url);
+    console.log(`➡️ Rewriting app subdomain request to: ${newUrl.toString()}`);
     return NextResponse.rewrite(newUrl);
   }
 

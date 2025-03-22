@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import mcpServersData from "../../../../src/data/mcp-servers.json";
 import { WhitelistOverlay } from "../../../../components/app-dashboard/whitelist-overlay";
+import Image from "next/image";
 
 // Base path for static assets in subdomains
 const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "http://localhost:3000";
@@ -111,12 +112,15 @@ export default function MCPServerDetailPage() {
                 <span className="text-6xl font-bold text-muted-foreground">{server.name.charAt(0)}</span>
               </div>
             ) : (
-              <img
-                src={imageUrl}
-                alt={server.name}
-                className="w-full h-full object-cover"
-                onError={() => setImgError(true)}
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={imageUrl}
+                  alt={server.name}
+                  fill
+                  className="object-cover"
+                  onError={() => setImgError(true)}
+                />
+              </div>
             )}
 
             {/* Overlay with server info */}

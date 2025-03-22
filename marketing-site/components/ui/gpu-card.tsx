@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ExternalLink, Cpu, Database, Zap } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "./badge";
+import Image from "next/image";
 
 interface GpuCardProps {
   id: string;
@@ -41,16 +42,18 @@ export function GpuCard({
   return (
     <Card className="overflow-hidden hover:border-primary/50 transition-colors h-full">
       {/* Full-width top half image with no padding */}
-      <div className="h-48 w-full bg-muted/50 overflow-hidden">
+      <div className="h-48 w-full bg-muted/50 overflow-hidden relative">
         {imgError ? (
           <div className="flex items-center justify-center bg-muted h-full w-full">
             <span className="text-3xl font-bold text-muted-foreground">{name.charAt(0)}</span>
           </div>
         ) : (
-          <img 
+          <Image 
             src={image} 
             alt={name}
-            className="h-full w-full object-cover"
+            width={480}
+            height={192}
+            className="w-full h-full object-cover"
             onError={() => setImgError(true)}
           />
         )}

@@ -15,9 +15,10 @@ const BlogCard = ({ post, className = '' }: BlogCardProps) => {
         <Image
           src={post.image}
           alt={post.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover"
+          width={800}
+          height={400}
+          className="w-full h-full object-cover"
+          priority
         />
       </div>
       

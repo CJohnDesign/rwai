@@ -25,7 +25,7 @@ import { WhitelistOverlay } from "../../../components/app-dashboard/whitelist-ov
 // Common questions for FAQ section
 const faqQuestions = [
   {
-    question: "How do I get started with RWAI?",
+    question: "How do I get started with RWAi?",
     answer: "To get started, create an account and follow our quick start guide in the documentation section."
   },
   {
@@ -92,7 +92,7 @@ export default function HelpPage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm">
-              Find comprehensive guides and reference materials for all RWAI features and services.
+              Find comprehensive guides and reference materials for all RWAi features and services.
             </p>
           </CardContent>
           <CardFooter>
@@ -118,7 +118,7 @@ export default function HelpPage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm">
-              Connect with other users, share experiences, and get help from the RWAI community.
+              Connect with other users, share experiences, and get help from the RWAi community.
             </p>
           </CardContent>
           <CardFooter>
@@ -144,7 +144,7 @@ export default function HelpPage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm">
-              Learn how to use RWAI effectively with our detailed tutorials and walkthroughs.
+              Learn how to use RWAi effectively with our detailed tutorials and walkthroughs.
             </p>
           </CardContent>
           <CardFooter>
