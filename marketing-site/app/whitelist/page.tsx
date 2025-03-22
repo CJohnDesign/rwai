@@ -25,6 +25,7 @@ export default function WhitelistPage() {
     twitter_verified: false
   });
 
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ success: false, error: null });
   const [supabaseError, setSupabaseError] = useState(null);
@@ -123,6 +124,12 @@ export default function WhitelistPage() {
     
     setIsSubmitting(true);
     setSubmitStatus({ success: false, error: null });
+
+    if (!turnstileToken) {
+      setSubmitStatus({ success: false, error: "Please complete the Turnstile verification" });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const supabase = getSupabaseClient();
@@ -248,11 +255,24 @@ export default function WhitelistPage() {
                       Error: {submitStatus.error}
                     </div>
                   )}
+                  
+                  <div className="flex justify-center my-4">
+                    <Turnstile
+                      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                      onSuccess={(token) => setTurnstileToken(token)}
+                      onError={() => {
+                        setTurnstileToken(null);
+                        setSubmitStatus({ success: false, error: "Turnstile verification failed" });
+                      }}
+                      onExpire={() => setTurnstileToken(null)}
+                    />
+                  </div>
+
                   <div className="pt-4">
                     <Button
                       type="submit"
                       className="w-full bg-primary hover:bg-primary/90 text-white py-3 animate-bounce-subtle"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !turnstileToken}
                     >
                       {isSubmitting ? 'Submitting...' : 'Submit Application'}
                     </Button>
