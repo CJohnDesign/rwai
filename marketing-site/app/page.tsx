@@ -8,21 +8,35 @@ import Features from '../components/marketing/Features';
 import FAQ from '../components/marketing/FAQ';
 import Blog from '../components/marketing/Blog';
 import Footer from '../components/layout/Footer';
+import { HeroBackground } from '@/components/three/sections/HeroBackground';
+import { FeaturesBackground } from '@/components/three/sections/FeaturesBackground';
+import { CTABackground } from '@/components/three/sections/CTABackground';
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <>
       <Navbar />
       <main>
-        <Hero />
-        <Models />
-        <Partners />
-        <Whitelist />
-        <Features />
-        <FAQ />
-        <Blog />
+        <section className="relative">
+          <HeroBackground />
+          <Hero />
+        </section>
+        
+        <section className="relative">
+          <FeaturesBackground />
+          <Models />
+          <Partners />
+          <Whitelist />
+          <Features />
+        </section>
+        
+        <section className="relative">
+          <CTABackground />
+          <FAQ />
+          <Blog />
+        </section>
       </main>
       <Footer />
-    </div>
+    </>
   );
 }

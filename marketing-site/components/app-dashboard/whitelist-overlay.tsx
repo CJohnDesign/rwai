@@ -78,11 +78,14 @@ function CountdownTimer() {
 
 interface WhitelistOverlayProps {
   topOffset?: string; // Optional prop to control the top offset of the overlay
+  isEnabled?: boolean; // Optional prop to control visibility of the overlay
 }
 
-export function WhitelistOverlay({ topOffset = "top-0 md:top-[70px]" }: WhitelistOverlayProps) {
+export function WhitelistOverlay({ topOffset = "top-0 md:top-[70px]", isEnabled = true }: WhitelistOverlayProps) {
   // Add useEffect to disable scrolling when overlay is mounted
   useEffect(() => {
+    if (!isEnabled) return;
+    
     // Store the original overflow value
     const originalOverflow = document.body.style.overflow;
     // Prevent scrolling
@@ -92,7 +95,9 @@ export function WhitelistOverlay({ topOffset = "top-0 md:top-[70px]" }: Whitelis
     return () => {
       document.body.style.overflow = originalOverflow;
     };
-  }, []);
+  }, [isEnabled]);
+
+  if (!isEnabled) return null;
 
   return (
     <div className={`fixed inset-0 ${topOffset} z-40 bg-gradient-to-br from-white/80 to-gray-100/90 dark:from-black/70 dark:to-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300`}>
