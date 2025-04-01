@@ -4,10 +4,13 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { NeuralVolumeBackground } from '../three/NeuralVolumeBackground';
 
 export function ThreeFiberHero() {
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center">
+      <NeuralVolumeBackground />
+      
       <div className="container grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 relative z-10">
         {/* Left Column - Typography & Headings */}
         <div className="flex flex-col justify-center space-y-4">

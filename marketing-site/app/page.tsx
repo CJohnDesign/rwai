@@ -8,9 +8,6 @@ import Features from '../components/marketing/Features';
 import FAQ from '../components/marketing/FAQ';
 import Blog from '../components/marketing/Blog';
 import Footer from '../components/layout/Footer';
-import { HeroBackground } from '@/components/three/sections/HeroBackground';
-import { FeaturesBackground } from '@/components/three/sections/FeaturesBackground';
-import { CTABackground } from '@/components/three/sections/CTABackground';
 
 export default function Home() {
   return (
@@ -18,12 +15,10 @@ export default function Home() {
       <Navbar />
       <main>
         <section className="relative">
-          <HeroBackground />
           <Hero />
         </section>
         
         <section className="relative">
-          <FeaturesBackground />
           <Models />
           <Partners />
           <Whitelist />
@@ -31,7 +26,6 @@ export default function Home() {
         </section>
         
         <section className="relative">
-          <CTABackground />
           <FAQ />
           <Blog />
         </section>
