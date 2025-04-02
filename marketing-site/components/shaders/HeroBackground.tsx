@@ -8,45 +8,23 @@ const fragmentShader = `
   uniform vec2 iResolution;
   uniform vec4 overlayColor;
 
-  float rand(vec2 p) {
-    return fract(sin(dot(p, vec2(12.543,514.123)))*4732.12);
-  }
-
-  float noise(vec2 p) {
-    vec2 f = smoothstep(0.0, 1.0, fract(p));
-    vec2 i = floor(p);
+  void mainImage(out vec4 o, vec2 v) {
+    vec2 u = (v+v-(o.xy = iResolution.xy))/o.y;   
+    u /= .5 + .2*dot(u,u);
+    u += .2*cos(iTime) - 7.56;
     
-    float a = rand(i);
-    float b = rand(i+vec2(1.0,0.0));
-    float c = rand(i+vec2(0.0,1.0));
-    float d = rand(i+vec2(1.0,1.0));
-    
-    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-  }
-
-  void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-    float n = 2.0;
-    vec2 uv = fragCoord/iResolution.y;
-    vec2 uvp = fragCoord/iResolution.xy;
-    uv += 0.75*noise(uv*3.0+iTime/2.0+noise(uv*7.0-iTime/3.0)/2.0)/2.0;
-    float grid = (mod(floor((uvp.x)*iResolution.x/n),2.0)==0.0?1.0:0.0)*(mod(floor((uvp.y)*iResolution.y/n),2.0)==0.0?1.0:0.0);
-    
-    // Base color #000414
-    vec3 backgroundColor = vec3(0.0, 0.0157, 0.0784);
-    // Softer highlight color
-    vec3 highlightColor = vec3(0.1, 0.2, 0.4);
-    
-    // Reduce the intensity multiplier from 5.0 to 2.0 and adjust the power for softer transitions
-    vec3 col = mix(backgroundColor, highlightColor, 2.0*vec3(pow(1.0-noise(uv*4.0-vec2(0.0, iTime/2.0)),3.0)));
-    col *= grid;
-    col = pow(col, vec3(1.0/2.2));
-    
-    // Apply the theme-based color overlay
-    fragColor = vec4(mix(col, overlayColor.rgb, overlayColor.a), 1.0);
+    for (int i = 0; i < 3; i++) {
+      v = sin(1.5*u.yx + 2.*cos(u -= .01));
+      o[i] = 1. - exp(-6./exp(6.*length(v+sin(5.*v.y-3.*iTime)/4.)));
+    }
+    o.a = 1.0;
   }
 
   void main() {
-    mainImage(gl_FragColor, gl_FragCoord.xy);
+    vec4 color;
+    mainImage(color, gl_FragCoord.xy);
+    // Apply the theme-based color overlay
+    gl_FragColor = vec4(mix(color.rgb, overlayColor.rgb, overlayColor.a), 1.0);
   }
 `
 
