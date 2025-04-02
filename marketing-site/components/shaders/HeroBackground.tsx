@@ -8,23 +8,54 @@ const fragmentShader = `
   uniform vec2 iResolution;
   uniform vec4 overlayColor;
 
-  void mainImage(out vec4 o, vec2 v) {
-    vec2 u = (v+v-(o.xy = iResolution.xy))/o.y;   
-    u /= .5 + .2*dot(u,u);
-    u += .2*cos(iTime) - 7.56;
+  /*
+    "Shield" effect shader
+    Creates a dynamic hexagonal pattern with spherical distortion and glow
+  */
+  void mainImage(out vec4 O, vec2 I) {
+    // Iterator, z and time
+    float i = 0.0;
+    float z;
+    float t = iTime;
     
-    for (int i = 0; i < 3; i++) {
-      v = sin(1.5*u.yx + 2.*cos(u -= .01));
-      o[i] = 1. - exp(-6./exp(6.*length(v+sin(5.*v.y-3.*iTime)/4.)));
+    // Clear fragment color
+    O = vec4(0.0);
+    
+    // Loop 100 times for layered effect
+    for(; i < 1.0; i += 0.01) {
+      // Resolution for scaling
+      vec2 v = iResolution.xy;
+      
+      // Center and scale outward
+      vec2 p = (I + I - v) / v.y * i;
+      
+      // Sphere distortion and compute z
+      z = max(1.0 - dot(p, p), 0.0);
+      p /= 0.2 + sqrt(z) * 0.3;
+      
+      // Offset for hex pattern
+      p.y += fract(ceil(p.x = p.x / 0.9 + t) * 0.5) + t * 0.2;
+      
+      // Mirror quadrants
+      vec2 v2 = abs(fract(p) - 0.5);
+      
+      // Compute hex distance and add color with outward fade
+      float hexDist = abs(max(v2.x * 1.5 + v2, v2 + v2).y - 1.0) + 0.1 - i * 0.09;
+      
+      // Add color with energy tint
+      vec3 energyColor = vec3(2.0, 3.0, 5.0) / 2000.0;
+      O += vec4(energyColor, 1.0) * z / hexDist;
     }
-    o.a = 1.0;
+    
+    // Tanh tonemap for nice color curve
+    O = tanh(O * O);
+    
+    // Mix with theme overlay
+    O = vec4(mix(O.rgb, overlayColor.rgb, overlayColor.a), 1.0);
   }
 
   void main() {
-    vec4 color;
-    mainImage(color, gl_FragCoord.xy);
-    // Apply the theme-based color overlay
-    gl_FragColor = vec4(mix(color.rgb, overlayColor.rgb, overlayColor.a), 1.0);
+    mainImage(gl_FragColor, gl_FragCoord.xy);
   }
 `
 
