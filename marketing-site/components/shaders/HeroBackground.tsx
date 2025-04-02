@@ -234,7 +234,7 @@ export function HeroBackground() {
     if (match) {
       const [_, l, c, h] = match.map(Number)
       const rgb = oklchToRGB(l, c, h)
-      uniformsRef.current.overlayColor.value.set(rgb.r, rgb.g, rgb.b, 0.75)
+      uniformsRef.current.overlayColor.value.set(rgb.r, rgb.g, rgb.b, 0.25)
     }
   }, [theme])
 

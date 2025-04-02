@@ -8,7 +8,11 @@ interface ShaderCanvasProps {
 export function ShaderCanvas({ className }: ShaderCanvasProps) {
   return (
     <div className={`absolute inset-0 -z-10 ${className || ''}`}>
-      <Canvas>
+      <Canvas
+        gl={{ antialias: true }}
+        camera={{ position: [0, 0, 1], fov: 75 }}
+        style={{ width: '100%', height: '100%' }}
+      >
         <HeroBackground />
       </Canvas>
     </div>
