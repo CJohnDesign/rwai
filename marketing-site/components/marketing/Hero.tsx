@@ -22,28 +22,29 @@ const Hero = () => {
       </div>
       
       {/* Main Content Grid */}
-      <div className="container flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 relative z-10 py-12 lg:py-16">
-        {/* Left Column - Typography & Headings */}
-        <div className="flex flex-col justify-center space-y-4 mt-12 lg:mt-0">
-          <h1 className="tracking-tight animate-slide-up font-normal">
-            <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight">
-              Decentralizing
-            </span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight">
-              Ownership of
-            </span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-500 leading-tight">
-              AI Infrastructure
-            </span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-700 leading-tight">
-              with RWA Tokenization
-            </span>
-          </h1>
-        </div>
+      <div className="container flex-1 grid grid-cols-1 lg:grid-cols-[45%_55%] gap-8 lg:gap-16 relative z-10 py-12 lg:py-16">
+        {/* Left Column - All Content */}
+        <div className="flex flex-col justify-center space-y-8">
+          {/* Typography & Headings */}
+          <div className="space-y-4 mt-12 lg:mt-0">
+            <h1 className="tracking-tight animate-slide-up font-normal">
+              <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight">
+                Decentralizing
+              </span>
+              <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight">
+                Ownership of
+              </span>
+              <span className="block text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-500 leading-tight">
+                AI Infrastructure
+              </span>
+              <span className="block text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-700 leading-tight">
+                with RWA Tokenization
+              </span>
+            </h1>
+          </div>
 
-        {/* Right Column - Content */}
-        <div className="flex flex-col justify-center space-y-8 animate-fade-in animation-delay-200">
-          <div className="space-y-6">
+          {/* Content Section */}
+          <div className="animate-fade-in animation-delay-200 space-y-6">
             <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
               RWAi is the first platform where anyone can access, own, and earn passive income from state-of-the-art AI Rigs that run top open-source models like DeepSeek & Llama, delivering inference and other AI optimized compute services to a high demand market.
             </p>
@@ -70,6 +71,9 @@ const Hero = () => {
             </div>
           </div>
         </div>
+
+        {/* Right Column - Empty for Animation */}
+        <div className="hidden lg:block" />
       </div>
     </section>
   );

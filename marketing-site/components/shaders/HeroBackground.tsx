@@ -9,165 +9,162 @@ const fragmentShader = `
   uniform vec2 iMouse;
   uniform vec4 overlayColor;
 
-  vec2 M_;
-  #define A_ min( iResolution.x, iResolution.y )
+  #define AA true
+  #define TAU 6.28318530718
+  
+  vec3 boxSize = vec3(.34,.99,.99);
+  vec3 frameSize = vec3(.35,1.0,1.0);
 
-  // rotation
-  mat2 n(float a) {
-    float b = sin(a), c = cos(a);
-    return mat2(c, b, -b, c);
-  }
-  const mat2 L = mat2(-1.1, -.4, .3, 1);
-  // fbm
-  float M(in vec2 a) {
-    a *= L;
-    return cos(a.x + .18975) * sin(a.y + .494516) + .161525;
-  }
-  // material
-  float o(in vec2 d, in float e) {
-    float f = 0.;
-    for (int a = 0; a < 7; a++) {
-      float b = pow(2., float(a));
-      d *= n(float(a));
-      float c = pow(b, -e);
-      c = smoothstep(0., .05, c), f += c * M(b * d * n(float(a)));
-    }
-    return f;
-  }
-  // repetition
-  vec2 p(inout vec2 a, vec2 b) {
-    vec2 c = b * .5, d = floor((a + c) / b);
-    a.y -= mod(d.x, 2.) * .02, a = mod(a + c, b) - c;
-    return d;
-  }
-  // sphere ( ellipse attached )
-  float r(vec3 b) {
-    b.y += 1.6;
-    return length(b * vec3( 1, 1, .8 ) ) - 2.;
-  }
-  // ellipse
-  float z(vec3 b) {
-    vec3 a = b;
-    vec2 c = p(a.xz, vec2(.025, .05));
-    a.y -= .6, a.y += distance(a.y, r(b)) - .014,
-    a.xz *= n( atan( M_.x, M_.y ) ),
-    a.yz *= n(iTime * .7 * atan(abs(c.x - iTime * 2.), abs(c.y - iTime * 2.) ) );
-
-    float d = length(vec3(a.x * 1.2, a.y * (2. + cos( -iTime ) * .3 ), a.z )) - .014;
-    return d;
-  }
-  // sdf
-  float g(vec3 b) {
-    vec3 c = b;
-    float a = 5.;
-    a = min(a, r(c)), a = min(a, z(c));
-    return a;
-  }
-  // calcNormal (IQ)
-  vec3 A(in vec3 b) {
-    vec2 a = vec2(1, -1) * .5773;
-    return normalize(a.xyy * g(b + a.xyy * 5e-4) + a.yyx * g(b + a.yyx * 5e-4) +
-                     a.yxy * g(b + a.yxy * 5e-4) + a.xxx * g(b + a.xxx * 5e-4));
+  // Rotation matrix
+  mat2 rotation(float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return mat2(c, -s, s, c);
   }
 
-  float q(vec2 a, vec2 d) {
-    a.y /= iResolution.y / iResolution.x;
-    vec2 b = p(a, d);
-    float c = 0.;
-    c += smoothstep(.021, .02, length(a) - .02) * .05;
-    float e = mod(b.x, 2.) > 0. && mod(b.y, 2.) > 0. ? 0. : .015;
-    c = mix(c, 0., smoothstep(e, 0., length(a) - e));
-    return c;
+  // Map function
+  float map(float value, float min1, float max1, float min2, float max2) {
+    return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
   }
 
-  float S_( vec2 u ){
-    float p = .1;
+  // Easing function
+  float easeInOutCubic(float x) {
+    return x < 0.5 ? 4.0 * x * x * x : 1.0 - pow(-2.0 * x + 2.0, 3.0) / 2.0;
+  }
+
+  // Signed Distance Functions
+  float sdBox(vec3 p, vec3 b) {
+    vec3 q = abs(p) - b;
+    return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+  }
+
+  float sdBoxFrame(vec3 p, vec3 b, float e) {
+    p = abs(p) - b;
+    vec3 q = abs(p + e) - e;
+    return min(min(
+        length(max(vec3(p.x,q.y,q.z),0.0)) + min(max(p.x,max(q.y,q.z)),0.0),
+        length(max(vec3(q.x,p.y,q.z),0.0)) + min(max(q.x,max(p.y,q.z)),0.0)),
+        length(max(vec3(q.x,q.y,p.z),0.0)) + min(max(q.x,max(q.y,p.z)),0.0));
+  }
+
+  float sdSegment(vec2 p, vec2 a, vec2 b) {
+    vec2 pa = p - a;
+    vec2 ba = b - a;
+    float h = clamp(dot(pa,ba)/dot(ba,ba), 0.0, 1.0);
+    return length(pa - ba*h);
+  }
+
+  void mainImage0(out vec4 fragColor, in vec2 fragCoord) {
+    vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
+    uv.x -= 1.5; // Shift everything to the right
+    uv.y -= 0.5; // Shift everything to the bottom
+
+    vec3 col = vec3(0);  
+    float tt = fract(.2 * iTime);
+     
+    vec3 camPos = vec3(0., 0., 4.5); 
+    vec3 rayDir = normalize(vec3(uv, -1));
     
-    u.y += .015;
-  
-    vec2 vv = u;
-    u.y = abs( u.y ) - .006;
-  
-    if( vv.y < 0. ){
-      u.x *= -1.;
-    }
-  
-    vec2 v = u;
-
-    u.y -= .039;
-  
-    p = max(
-            length( u * vec2( 8. * abs( v.x ), 1. ) ) - .05,
-            -( length( u * vec2( 8. * abs( v.x ), 1. ) ) - .025 )
-      );
-  
-    u = v;
-  
-    u.x += .028;
-    u.y -= .014;
-  
-    p = max(
-      p,
-        sin( atan( u.x, u.y ) - .015 ) - .98
-      );
-  
-    return p;
-  }
-
-  void mainImage(out vec4 U, in vec2 V) {
-    // initial ro, rd global matrix (IQ)
-    vec2 a = V.xy / iResolution.xy, m = a;
-    a = (a - .5) * 2., a.x *= iResolution.x / iResolution.y;
+    // Rotate 90 degrees around Z axis
+    vec3 rotatedCamPos = vec3(camPos.y, -camPos.x, camPos.z);
+    vec3 rotatedRayDir = vec3(rayDir.y, -rayDir.x, rayDir.z);
     
-    M_ = ( iMouse.xy * 2. - iResolution.xy ) / min( iResolution.x, iResolution.y );
+    float depth = 0.0;
+    float closest;
+    float d;
+    vec3 p = vec3(0);
+    float cID;
     
-    vec3 e = vec3(0), C = vec3(0, 0, 0);
-    e = vec3(0, .6, -1);
-    vec3 f = normalize(C - e), l = normalize(cross(f, vec3(0, 1, 0))),
-         D = normalize(cross(l, f)), s = vec3(0),
-         c = normalize(a.x * l + a.y * D + 2.5 * f);
-    float h = 0.;
-    // trace
-    for (int E = 0; E < 64; ++E) {
-      vec3 F = e + c * h;
-      float N = g(F) * .44445; // smoothly step
-      h += N;
-    }
-    vec3 i = vec3(0), j = normalize(vec3(0, .05, .3)), G = normalize(j - c),
-         t = normalize(vec3(-10.5, .05, -2.5)), H = normalize(t - c),
-         u = normalize(vec3(.7, .05, 2)), I = normalize(u - c);
-    t.yz *= n(-iTime * .1), j.xy *= n(iTime * .6), u.xy *= n(iTime * .5);
-    // integrated lights
-    if (h < 5.) {
-      vec3 d = e + h * c, b = A(d);
-      float J = o(vec2(o(b.xz * 15., cos(iTime))), .9),
-            k = clamp(dot(b, vec3(.4, 1, -.5)), 0., 1.),
-            v = pow(clamp(dot(b, G), 0., 1.), 150.);
-      v *= k;
-      float w = pow(clamp(dot(b, H), .2, 2.), 250.);
-      w *= k;
-      float x = pow(clamp(dot(b, I), .2, 2.), 80.);
-      x *= k;
-      float O = dot(b, vec3(0));
-      vec3 K = vec3(.7, .1, .09) * 3. + vec3(sin(atan(a.x, a.y)),
-                                             cos(atan(a.x, a.y)),
-                                             sin(atan(a.x, a.y))),
-           P = .7 + .3 * cos(iTime * .1 + a.yxy + vec3(6, 2, 4)),
-           Q = v * vec3(1, .91, .37), R = w * vec3(.19, 7e-3, .63),
-           S = x * vec3(1, .1, .2);
-      if (g(d) == r(d)) {
-        float W = q(b.xz + J, vec2(3e-3, 3e-3));
-      } else if (g(d) == z(d)) {
-        float T = smoothstep( 5. / A_, -5. / A_, S_( A(d).xz * vec2(-1,1) + vec2( .0, .45 ) ) ) * max( A( d ).y, 0. );
-        i = T * .01 + q(b.xy, vec2(.05, .07)) * .05 + Q + R + S + K * O + vec3(5e-3) * K * k + P * vec3(.035);
-        i *= pow(k, 3.);
+    for(int numIter = 0; numIter < 200; numIter++) {
+      p = rotatedCamPos + depth * rotatedRayDir;
+
+      // Limited Domain Repetition    
+      float scale = 2.;
+      float cellID = clamp(round(scale * p.x),-2.5 * scale,2.5 * scale); 
+      p.x = (scale * p.x) - cellID;
+      
+      // Rotation calculation
+      float nCell = (cellID + 5.) / 10.; // 0 to 1  
+      float start = map(nCell,0.,1.,0.,.12);
+      float end = start + .88;
+      if (tt > start && tt < end) {
+        float ttt = easeInOutCubic(map(tt, start, end, 0., 1.));
+        p.yz *= rotation(TAU * ttt);
+      }
+      
+      // SDFs
+      float box = sdBox(p, boxSize);
+      float frame = sdBoxFrame(p, frameSize, .01);  
+      d = min(box,frame);
+      closest = step(0.,box-frame);
+      depth += d * .3;
+      if (d < .01 || depth > 20.0) { 
+        cID = cellID;
+        break;
       }
     }
-    i = i * 2.5, i += .02 * cos(iTime * .5 + a.xyx + vec3(0, 2, 4)), s += i,
-    s *= mix( // after mask
-        1. - smoothstep(0., .1, length(vec2(m.x * .8, m.y) - vec2(.4, .5)) - .4),
-        1., step(m.y, .5)),
-    U = vec4(mix(s, overlayColor.rgb, overlayColor.a), 1.0);
+    
+    d = depth;
+
+    if (d > 20.) {
+      col = vec3(0.);  
+    } 
+    else if (closest == 0.) {
+      vec2 side;
+      bool stars;
+      vec3 q = abs(p);
+      
+      if (q.x > q.y && q.x > q.z) { 
+        side = p.yz; 
+        stars = false; 
+      } 
+      else if (q.y >= q.x && q.y > q.z) { 
+        side = p.xz; 
+        stars = true; 
+      }
+      else { 
+        side = p.xy; 
+        stars = true; 
+      }    
+
+      if (stars) {
+        // Draw Lines
+        float line_1 = sdSegment(side, vec2(.2,.8), vec2(.2,-.8));
+        float line_2 = sdSegment(side, vec2(-.2,.8), vec2(-.2,-.8));
+        col += 10. * smoothstep(.025,-.025,line_1);
+        col += 10. * smoothstep(.025,-.025,line_2);
+        
+        // Draw Stars (on boxes)
+        vec2 star_uv = 4. * side * boxSize.y/boxSize.x;
+        vec2 starID = round(star_uv);
+        starID.x = clamp(starID.x,-1.,1.);
+        starID.y = clamp(starID.y,-9.,9.);
+        star_uv = star_uv - starID;
+        float off = fract(323.23*sin(cID + starID.x/10.) * 12.*sin(cID + starID.y/10.));
+        float star_rad = .25 + .25*sin(4.*TAU*tt + TAU*off);
+        float star = length(star_uv) - star_rad;
+        col += smoothstep(0.,-fwidth(star),star);
+      }
+    } 
+    else if (closest == 1.) {
+      col = vec3(1.);
+    }
+
+    fragColor = vec4(mix(col, overlayColor.rgb, overlayColor.a), 1.0);
+  }
+
+  void mainImage(out vec4 O, vec2 U) {
+    mainImage0(O,U);
+    if(AA) {
+      if (fwidth(length(O)) > .01) {  // difference threshold between neighbor pixels
+        vec4 o;
+        for (int k=0; k < 9; k+= k==3?2:1) { 
+          mainImage0(o,U+vec2(k%3-1,k/3-1)/3.); 
+          O += o; 
+        }
+        O /= 9.;
+      }
+    }
   }
 
   void main() {
