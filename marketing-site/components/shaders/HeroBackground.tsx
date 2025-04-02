@@ -7,42 +7,169 @@ const fragmentShader = `
   uniform float iTime;
   uniform vec2 iResolution;
   uniform vec4 overlayColor;
+  uniform float iFrame;
 
-  float rand(vec2 p) {
-    return fract(sin(dot(p, vec2(12.543,514.123)))*4732.12);
+  #define R iResolution.xy
+  #define EPS .005
+  #define FAR 140.
+  #define T iTime
+  #define TORUS vec2(40.0,18.0)
+
+  mat2 rot(float x) {
+    return mat2(cos(x), sin(x), -sin(x), cos(x));
   }
 
-  float noise(vec2 p) {
-    vec2 f = smoothstep(0.0, 1.0, fract(p));
-    vec2 i = floor(p);
-    
-    float a = rand(i);
-    float b = rand(i+vec2(1.0,0.0));
-    float c = rand(i+vec2(0.0,1.0));
-    float d = rand(i+vec2(1.0,1.0));
-    
-    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+  const float c = 1.0;
+  const float ch = c * 0.5;
+  const float ch2 = ch + 0.01;
+
+  float dBox(vec3 ro, vec3 rd) {
+    vec3 m = 1.0 / rd;
+    vec3 t = -m * ro + abs(m) * ch2;
+    return min(min(t.x, t.y), t.z);
   }
 
-  void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-    float n = 2.0;
-    vec2 uv = fragCoord/iResolution.y;
-    vec2 uvp = fragCoord/iResolution.xy;
-    uv += 0.75*noise(uv*3.0+iTime/2.0+noise(uv*7.0-iTime/3.0)/2.0)/2.0;
-    float grid = (mod(floor((uvp.x)*iResolution.x/n),2.0)==0.0?1.0:0.0)*(mod(floor((uvp.y)*iResolution.y/n),2.0)==0.0?1.0:0.0);
+  vec3 rotHue(vec3 p, float a) {
+    vec2 cs = sin(vec2(1.570796,0) + a);
+    mat3 hr = mat3(0.299, 0.587, 0.114, 0.299, 0.587, 0.114, 0.299, 0.587, 0.114) +
+              mat3(0.701, -0.587, -0.114, -0.299, 0.413, -0.114, -0.300, -0.588, 0.886) * cs.x +
+              mat3(0.168, 0.330, -0.497, -0.328, 0.035, 0.292, 1.250, -1.050, -0.203) * cs.y;
+    return clamp(p*hr, 0.0, 1.0);
+  }
+
+  vec2 hash23(vec3 p3) {
+    p3 = fract(p3 * vec3(.1031, .1030, .0973));
+    p3 += dot(p3, p3.yzx+33.33);
+    return fract((p3.xx+p3.yz)*p3.zy);
+  }
+
+  float sdTorus(vec3 p, vec2 t) {
+    vec2 q = vec2(length(p.yz) - t.x, p.x);
+    return length(q) - t.y;
+  }
+
+  float sdCoin(vec3 p, float r, float h) {
+    vec2 d = vec2(length(p.xz) - r, abs(p.y) - h);
+    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+  }
+
+  float boxedTorus(vec3 p, vec3 rd) {
+    float AT = T*0.4;
+    vec3 q = p;
+    q.yz *= rot(AT);
+    rd.yz *= rot(AT);
+    vec3 qd = fract(q/c)*c - ch;
+    vec3 qid = floor(q/c) + 0.5;
+    vec2 h2 = hash23(qid);
+    float t = dBox(qd, rd);
     
-    // Base color #000414
-    vec3 backgroundColor = vec3(0.0, 0.0157, 0.0784);
-    // Softer highlight color
-    vec3 highlightColor = vec3(0.1, 0.2, 0.4);
+    if (sdTorus(floor(q/c)+.5, TORUS) < 0.0 && p.y < 0.0) {
+      qd.yz *= rot(h2.y + h2.x*T);
+      qd.zx *= rot(h2.x + h2.y*T);
+      t = min(t, sdCoin(qd, 0.3, 0.05));    
+    }
+    return t;
+  }
+
+  float boxedWall(vec3 p, vec3 rd) {
+    float AT = T*0.4;
+    p.y += AT * 25.0;
+    vec3 qd = fract(p/c)*c - ch;
+    vec3 qid = floor(p/c);
+    vec2 h2 = hash23(qid);
+    float t = dBox(qd, rd);
     
-    // Reduce the intensity multiplier from 5.0 to 2.0 and adjust the power for softer transitions
-    vec3 col = mix(backgroundColor, highlightColor, 2.0*vec3(pow(1.0-noise(uv*4.0-vec2(0.0, iTime/2.0)),3.0)));
-    col *= grid;
-    col = pow(col, vec3(1.0/2.2));
+    if (p.z > (TORUS.x - TORUS.y)) {
+      qd.yz *= rot(h2.y + h2.x*T);
+      qd.zx *= rot(h2.x + h2.y*T);
+      t = min(t, sdCoin(qd, 0.3, 0.05));    
+    }
+    return t;
+  }
+
+  float map(vec3 p, vec3 rd) {    
+    return min(boxedTorus(p, rd), boxedWall(p, rd));
+  }
+
+  vec3 normal(vec3 p, vec3 rd) {  
+    vec4 n = vec4(0.0);
+    for (int i = 0; i < 4; i++) {
+      vec4 s = vec4(p, 0.0);
+      s[i] += EPS;
+      n[i] = map(s.xyz, rd);
+    }
+    return normalize(n.xyz-n.w);
+  }
+
+  vec4 render(vec3 ro, vec3 rd) {
+    vec3 pc = vec3(0.0),
+         lp = vec3(-10.0, 8.0, -8.0),
+         sc = rotHue(vec3(1.0, 0.5, 0.1), T*0.3);
+
+    float t = 0.0, mint = FAR;   
     
-    // Apply the theme-based color overlay
-    fragColor = vec4(mix(col, overlayColor.rgb, overlayColor.a), 1.0);
+    for (int i = 0; i < 360; i++) {
+      float ns = map(ro + rd*t, rd);
+      if (ns < EPS) {
+        break;
+      }
+      t += ns;
+      if (t > FAR) {
+        t = -1.0;
+        break;
+      }
+    }
+    
+    if (t > 0.0) {
+      mint = t;
+      vec3 p = ro + rd*t;
+      vec3 n = normal(p, rd);
+      vec3 ld = normalize(lp - p);
+      float lt = length(lp - p); 
+      float spec = pow(max(dot(reflect(-ld, n), -rd), 0.0), 32.0);
+      
+      pc += sc*0.4*max(0.05, dot(ld,n)) / (1.0 + lt*lt*0.02);
+      pc += sc*spec*2.0;
+      pc += vec3(0.6, 0.1, 0.8)*0.01*max(0.0, n.y);
+    }
+
+    pc *= exp(-0.06 * mint); 
+    pc = pow(pc, vec3(0.43545));
+    
+    return vec4(pc, mint);
+  }
+
+  mat3 camera(vec3 la, vec3 ro, float cr) {
+    vec3 cw = normalize(la - ro),
+         cp = vec3(sin(cr), cos(cr), 0.0),
+         cu = normalize(cross(cw,cp)),
+         cv = cross(cu,cw);
+    return mat3(cu,cv,cw); 
+  }
+
+  void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+    float AT = T - 4.1;
+    vec3 pc = vec3(0.0),
+         la = vec3(0.0, -10.0, TORUS.x),
+         ro = vec3(sin(AT*0.2)*20.0,
+                  -20.0,
+                  -5.0 + cos(AT*0.31)*3.0);
+    ro.y -= ro.x*ro.x*0.02*sin(AT*0.3);
+    
+    float fl = 1.4;
+    mat3 cam = camera(la, ro, 0.0);  
+
+    vec2 uv = (2.0*fragCoord - R.xy)/R.y;
+    vec3 rd = cam*normalize(vec3(uv, fl));        
+    vec4 scene = render(ro, rd);
+    pc = scene.xyz;
+
+    pc = 1.15*pow(pc, vec3(0.9, 0.95, 1.0)) + vec3(-0.04, -0.04, 0.0);
+    pc = pow(pc, vec3(0.80, 0.85, 0.9));
+    pc *= 1.0 / (1.0 + length(uv)*length(uv)*0.2);
+
+    // Mix with theme color
+    fragColor = vec4(mix(pc*2.4, overlayColor.rgb, overlayColor.a), 1.0);
   }
 
   void main() {
@@ -78,9 +205,11 @@ function oklchToRGB(l: number, c: number, h: number) {
 export function HeroBackground() {
   const meshRef = useRef<THREE.Mesh>(null)
   const { theme } = useTheme()
+  const frameRef = useRef(0)
   
   const uniformsRef = useRef({
     iTime: { value: 0 },
+    iFrame: { value: 0 },
     iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
     overlayColor: { value: new THREE.Vector4(0, 0, 0, 1) }
   })
@@ -104,6 +233,7 @@ export function HeroBackground() {
   useFrame((state) => {
     if (!meshRef.current) return
     uniformsRef.current.iTime.value = state.clock.elapsedTime
+    uniformsRef.current.iFrame.value = frameRef.current++
     uniformsRef.current.iResolution.value.set(window.innerWidth, window.innerHeight)
   })
 
