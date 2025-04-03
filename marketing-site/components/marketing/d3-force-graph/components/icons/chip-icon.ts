@@ -1,0 +1,96 @@
+export function renderChipIcon(container: SVGGElement) {
+  const foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject")
+  foreignObject.setAttribute("width", "24")
+  foreignObject.setAttribute("height", "24")
+  foreignObject.setAttribute("x", "-12")
+  foreignObject.setAttribute("y", "-12")
+
+  const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  iconSvg.setAttribute("width", "24")
+  iconSvg.setAttribute("height", "24")
+  iconSvg.setAttribute("viewBox", "0 0 24 24")
+  iconSvg.setAttribute("fill", "none")
+  iconSvg.setAttribute("stroke", "white")
+  iconSvg.setAttribute("stroke-width", "2")
+  iconSvg.setAttribute("stroke-linecap", "round")
+  iconSvg.setAttribute("stroke-linejoin", "round")
+
+  // New chip icon with a single chip design
+  const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+  rect.setAttribute("x", "4")
+  rect.setAttribute("y", "4")
+  rect.setAttribute("width", "16")
+  rect.setAttribute("height", "16")
+  rect.setAttribute("rx", "2")
+  rect.setAttribute("ry", "2")
+  iconSvg.appendChild(rect)
+
+  // Add pins to the chip
+  const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line1.setAttribute("x1", "9")
+  line1.setAttribute("y1", "1")
+  line1.setAttribute("x2", "9")
+  line1.setAttribute("y2", "4")
+  iconSvg.appendChild(line1)
+
+  const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line2.setAttribute("x1", "15")
+  line2.setAttribute("y1", "1")
+  line2.setAttribute("x2", "15")
+  line2.setAttribute("y2", "4")
+  iconSvg.appendChild(line2)
+
+  const line3 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line3.setAttribute("x1", "9")
+  line3.setAttribute("y1", "20")
+  line3.setAttribute("x2", "9")
+  line3.setAttribute("y2", "23")
+  iconSvg.appendChild(line3)
+
+  const line4 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line4.setAttribute("x1", "15")
+  line4.setAttribute("y1", "20")
+  line4.setAttribute("x2", "15")
+  line4.setAttribute("y2", "23")
+  iconSvg.appendChild(line4)
+
+  const line5 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line5.setAttribute("x1", "20")
+  line5.setAttribute("y1", "9")
+  line5.setAttribute("x2", "23")
+  line5.setAttribute("y2", "9")
+  iconSvg.appendChild(line5)
+
+  const line6 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line6.setAttribute("x1", "20")
+  line6.setAttribute("y1", "14")
+  line6.setAttribute("x2", "23")
+  line6.setAttribute("y2", "14")
+  iconSvg.appendChild(line6)
+
+  const line7 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line7.setAttribute("x1", "1")
+  line7.setAttribute("y1", "9")
+  line7.setAttribute("x2", "4")
+  line7.setAttribute("y2", "9")
+  iconSvg.appendChild(line7)
+
+  const line8 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+  line8.setAttribute("x1", "1")
+  line8.setAttribute("y1", "14")
+  line8.setAttribute("x2", "4")
+  line8.setAttribute("y2", "14")
+  iconSvg.appendChild(line8)
+
+  // Add inner details to the chip
+  const innerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+  innerRect.setAttribute("x", "9")
+  innerRect.setAttribute("y", "9")
+  innerRect.setAttribute("width", "6")
+  innerRect.setAttribute("height", "6")
+  iconSvg.appendChild(innerRect)
+
+  foreignObject.innerHTML = new XMLSerializer().serializeToString(iconSvg)
+  container.appendChild(foreignObject)
+}
+

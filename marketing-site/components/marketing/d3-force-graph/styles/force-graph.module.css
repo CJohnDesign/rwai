@@ -1,0 +1,76 @@
+.link {
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  filter: url(#edgeGlow);
+  cursor: pointer;
+}
+
+.user-gateway-link:hover {
+  stroke: var(--primary);
+  stroke-opacity: 1;
+}
+
+.gateway-llm-link:hover {
+  stroke: var(--secondary);
+  stroke-opacity: 1;
+}
+
+.llm-gpu-link:hover {
+  stroke: var(--accent);
+  stroke-opacity: 1;
+}
+
+.node {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.node:hover {
+  transform: scale(1.1);
+}
+
+.links path {
+  transition: all 0.3s ease;
+}
+
+.links path:hover {
+  filter: url(#edgeGlow);
+  cursor: pointer;
+}
+
+.flows {
+  pointer-events: none;
+}
+
+/* Connection type specific styles */
+.user-gateway-link {
+  transition: all 0.3s ease;
+}
+
+.user-gateway-link:hover {
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-opacity: 1;
+}
+
+.gateway-llm-link {
+  transition: all 0.3s ease;
+}
+
+.gateway-llm-link:hover {
+  stroke: var(--secondary);
+  stroke-width: 2.5;
+  stroke-opacity: 1;
+}
+
+.llm-gpu-link {
+  transition: all 0.3s ease;
+}
+
+.llm-gpu-link:hover {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-opacity: 1;
+} 
