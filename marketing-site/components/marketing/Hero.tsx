@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
-// import { ShaderCanvas } from '../shaders/ShaderCanvas';
+import { ShaderCanvas } from '../shaders/ShaderCanvas';
 import { HeroForceGraph } from './d3-force-graph/components/hero-force-graph';
 
 const Hero = () => {
@@ -18,9 +18,9 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-[100svh] w-full flex flex-col bg-transparent overflow-hidden">
-      {/* <div className="absolute inset-0">
+      <div className="absolute inset-0">
         <ShaderCanvas />
-      </div> */}
+      </div>
       
       {/* Main Content Grid */}
       <div className="container flex-1 grid grid-cols-1 lg:grid-cols-[45%_55%] gap-8 lg:gap-16 relative z-10 py-12 lg:py-16">
@@ -77,7 +77,7 @@ const Hero = () => {
         <div className="relative hidden lg:block">
           {mounted && (
             <div className="absolute inset-0">
-              <HeroForceGraph className="animate-fade-in animation-delay-300" />
+              {/* <HeroForceGraph className="animate-fade-in animation-delay-300" /> */}
             </div>
           )}
         </div>
