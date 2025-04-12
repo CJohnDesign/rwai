@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import { sankey, sankeyLinkHorizontal, SankeyGraph, SankeyNode, SankeyLink } from 'd3-sankey';
-import { SankeyData } from '../../data/sankey-data';
+import { SankeyData } from '@/data/sankey-data';
 
 interface SankeyDiagramProps {
   data: SankeyData;

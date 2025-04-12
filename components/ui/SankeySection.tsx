@@ -2,7 +2,6 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { sankeyData } from '../../data/sankey-data';
 
 // Import the Sankey diagram component with dynamic import to avoid SSR issues with D3
 const SankeyDiagram = dynamic(
@@ -32,7 +31,6 @@ const SankeySection: React.FC = () => {
         
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 h-[450px] md:h-[550px]">
           {/* D3 Sankey Diagram */}
-          <SankeyDiagram data={sankeyData} />
         </div>
         
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
