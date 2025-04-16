@@ -40,6 +40,8 @@ interface Model {
   featured: boolean;
 }
 
+
+
 // Format date function
 const formatDate = (isoDate: string) => {
   const date = new Date(isoDate);
