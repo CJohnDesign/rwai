@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 // Default image path
-const DEFAULT_IMAGE_PATH = "/images/texture_3.png";
+const DEFAULT_IMAGE_PATH = "/images/logo-mistral.png";
 
 // Define Model interface
 interface Model {

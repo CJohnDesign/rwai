@@ -74,7 +74,7 @@ const nextConfig = {
         has: [
           {
             type: 'host',
-            value: isProduction ? 'app.potence.ai' : 'app.localhost:3000',
+            value: isProduction ? 'app.rwai.xyz' : 'app.localhost:3000',
           },
         ],
         destination: '/app/:path*',
