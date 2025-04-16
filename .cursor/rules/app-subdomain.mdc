@@ -1,9 +1,0 @@
----
-description: app is a subdomain, not a page. the final url will look like app.localhost:3000, not localhost:3000/app
-globs: 
-alwaysApply: false
----
-
-# Your rule content
-
-- app is a subdomain, not a page. the final url will look like app.localhost:3000, not localhost:3000/app

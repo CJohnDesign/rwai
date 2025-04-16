@@ -84,7 +84,6 @@ The project uses a combination of Tailwind CSS and custom CSS variables for styl
 1. Clone the repository:
    ```bash
    git clone https://github.com/cjohndesign/rwai.git
-   cd rwai/marketing-site
    ```
 
 2. Install dependencies:
@@ -166,3 +165,44 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Next.js](https://nextjs.org) for the React framework
 - [Tailwind CSS](https://tailwindcss.com) for styling
 - [Radix UI](https://www.radix-ui.com) for accessible UI primitives
+
+## Environment Variables
+
+This project requires several environment variables to be set:
+
+### Basic Configuration
+- `NEXT_PUBLIC_BASE_PATH` - Base URL for the application (e.g., `http://localhost:3000` for development)
+
+### Supabase Configuration
+For forms and database functionality, Supabase credentials are required:
+
+1. Create a [Supabase](https://supabase.com) account and project
+2. Set up the following environment variables in your `.env.local` file:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-url.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+3. Create a table called `whitelist_applications` with the following schema:
+   ```sql
+   CREATE TABLE whitelist_applications (
+     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+     name TEXT NOT NULL,
+     email TEXT NOT NULL,
+     wallet_address TEXT,
+     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+   );
+   ```
+
+## Local Development
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy `.env.example` to `.env.local` and fill in the required values
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
