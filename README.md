@@ -206,4 +206,3 @@ For forms and database functionality, Supabase credentials are required:
    npm run dev
    ```
 
-   
