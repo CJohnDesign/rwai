@@ -13,42 +13,9 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: {
-    domains: ['localhost', 'app.localhost', 'rwai.xyz', 'app.rwai.xyz', 'potence.ai', 'app.potence.ai'],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    remotePatterns: [
-      // Localhost patterns for development
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'app.localhost',
-        port: '3000',
-        pathname: '/**',
-      },
-      // Production patterns
-      {
-        protocol: 'https',
-        hostname: 'rwai.xyz',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'app.rwai.xyz',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'potence.ai',
-        pathname: '/**',
-      },
-      
-    ],
     unoptimized: process.env.NODE_ENV === 'development',
     path: '',
     loader: 'default'
@@ -63,23 +30,6 @@ const nextConfig = {
         },
       },
     },
-  },
-  // Subdomain configuration
-  async rewrites() {
-    const isProduction = process.env.NODE_ENV === 'production';
-    return [
-      // Handle app.rwai.xyz subdomain in production
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: isProduction ? 'app.rwai.xyz' : 'app.localhost:3000',
-          },
-        ],
-        destination: '/app/:path*',
-      }
-    ];
   },
   // Add webpack configuration for better optimization
   webpack: (config, { dev, isServer }) => {
