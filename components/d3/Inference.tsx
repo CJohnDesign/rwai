@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
+import Image from 'next/image';
 
-// User profiles data
-const userProfiles = [
+// Profile data
+const profiles = [
   { image: "/images/user-pic-1.png", title: "AI Research Lead" },
   { image: "/images/user-pic-2.png", title: "Startup Founder" },
   { image: "/images/user-pic-3.png", title: "ML Engineer" },
@@ -20,6 +21,84 @@ const userProfiles = [
   { image: "/images/user-pic-13.png", title: "Tech Lead" },
   { image: "/images/user-pic-14.png", title: "AI Engineer" }
 ];
+
+// Model data
+const models = [
+  { id: "llama", image: "/images/logo-llana.png", size: 100, type: 'model', label: "Llama 2" },
+  { id: "mistral", image: "/images/logo_mistral.png", size: 100, type: 'model', label: "Mistral AI" },
+  { id: "deepseek", image: "/images/logo_deepseek.png", size: 100, type: 'model', label: "DeepSeek" },
+  { id: "blackforest", image: "/images/logo_black-forest.png", size: 100, type: 'model', label: "Black Forest" }
+];
+
+// Create image patterns using Next.js Image component
+const createImagePatterns = (svg: d3.Selection<SVGSVGElement, unknown, null, undefined>) => {
+  // Remove existing patterns
+  svg.selectAll("defs").remove();
+  
+  const defs = svg.append("defs");
+
+  // Create patterns for profile images
+  profiles.forEach((profile, i) => {
+    const pattern = defs
+      .append("pattern")
+      .attr("id", `profile-${i}`)
+      .attr("width", 1)
+      .attr("height", 1)
+      .attr("patternUnits", "objectBoundingBox");
+
+    // Use foreignObject to embed Next.js Image component
+    const fo = pattern
+      .append("foreignObject")
+      .attr("width", "100%")
+      .attr("height", "100%");
+
+    // Create a div to hold the Next.js Image
+    const div = fo
+      .append("xhtml:div")
+      .style("width", "100%")
+      .style("height", "100%")
+      .style("position", "relative");
+
+    // Add Next.js Image component
+    const img = div
+      .append("xhtml:img")
+      .attr("src", profile.image)
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .style("object-fit", "cover");
+  });
+
+  // Create patterns for model images
+  models.forEach(model => {
+    const pattern = defs
+      .append("pattern")
+      .attr("id", `model-${model.id}`)
+      .attr("width", 1)
+      .attr("height", 1)
+      .attr("patternUnits", "objectBoundingBox");
+
+    // Use foreignObject to embed Next.js Image component
+    const fo = pattern
+      .append("foreignObject")
+      .attr("width", "100%")
+      .attr("height", "100%");
+
+    // Create a div to hold the Next.js Image
+    const div = fo
+      .append("xhtml:div")
+      .style("width", "100%")
+      .style("height", "100%")
+      .style("position", "relative");
+
+    // Add Next.js Image component
+    const img = div
+      .append("xhtml:img")
+      .attr("src", model.image)
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .style("object-fit", "contain");
+  });
+};
 
 interface Node extends d3.SimulationNodeDatum {
   id: string;
@@ -51,7 +130,7 @@ export const Inference = () => {
 
     // Get random user profiles
     const getRandomUserProfiles = (count: number) => {
-      const shuffled = [...userProfiles].sort(() => 0.5 - Math.random());
+      const shuffled = [...profiles].sort(() => 0.5 - Math.random());
       return shuffled.slice(0, count);
     };
 
