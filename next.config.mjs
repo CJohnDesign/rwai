@@ -13,7 +13,7 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   images: {
-    domains: ['localhost', 'app.localhost', 'rwai.xyz', 'app.rwai.xyz'],
+    domains: ['localhost', 'app.localhost', 'rwai.xyz', 'app.rwai.xyz', 'potence.ai', 'app.potence.ai'],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -41,7 +41,13 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'app.rwai.xyz',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'potence.ai',
+        pathname: '/**',
+      },
+      
     ],
     unoptimized: process.env.NODE_ENV === 'development',
     path: '',
