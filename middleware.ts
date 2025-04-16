@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const config = {
   matcher: [
     // Match all paths except internals and static files
-    '/((?!api|_next|_static|_vercel|[\\w-]+\\.\\w+).*)',
+    '/((?!api|_next|_static|_vercel|images|.*\\.(?:jpg|jpeg|gif|png|svg|ico)).*)',
   ],
 };
 
@@ -43,12 +43,14 @@ export default function middleware(request: NextRequest) {
   const isAppSubdomain = currentHost.startsWith('app.');
   
   if (isAppSubdomain) {
-    // Static assets pass-through
+    // Static assets and images pass-through
     if (
       url.pathname.startsWith('/_next/') ||
       url.pathname.startsWith('/favicon.ico') ||
       url.pathname.startsWith('/favicon_io/') ||
-      url.pathname.startsWith('/images/')
+      url.pathname.startsWith('/images/') ||
+      url.pathname.startsWith('/_next/image') || // Next.js image optimization
+      /\.(jpg|jpeg|gif|png|svg|ico)$/i.test(url.pathname)
     ) {
       return NextResponse.next();
     }
