@@ -2,9 +2,5 @@
   "version": 2,
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "env": {
-    "NEXT_PUBLIC_APP_URL": "https://app.rwai.xyz",
-    "NEXT_PUBLIC_MAIN_URL": "https://rwai.xyz"
-  }
+  "installCommand": "npm install"
 } 
