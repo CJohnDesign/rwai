@@ -13,7 +13,7 @@ import modelsData from "../../../data/models.json";
 const IMAGE_BASE_PATH = "/";
 
 // Default image path
-const DEFAULT_IMAGE_PATH = "texture_3.png";
+const DEFAULT_IMAGE_PATH = "/images/logo_mistral.png";
 
 // Define Model interface
 interface Model {
