@@ -43,7 +43,7 @@ const Hero = () => {
 
           <div className="animate-fade-in animation-delay-200">
             <p className="hidden lg:block text-lg md:text-xl text-gray-100 leading-relaxed mb-4">
-              RWAi is the first platform where anyone can access, own, and earn passive income from state-of-the-art AI Rigs that run top open-source models.
+              RWAi is the only platform where anyone can access, own, and earn passive income from state-of-the-art AI Rigs that run top open-source models.
             </p>
 
             <div>
