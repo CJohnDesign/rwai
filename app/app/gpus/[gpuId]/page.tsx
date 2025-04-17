@@ -10,8 +10,8 @@ import gpusData from "../../../../data/gpus.json";
 import { WhitelistOverlay } from "../../../../components/app-dashboard/whitelist-overlay";
 import Image from "next/image";
 
-// Base path for static assets in subdomains
-const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "http://localhost:3000";
+// Simple image handling
+const DEFAULT_IMAGE_PATH = "/images/GPU_1.png";
 
 // Define GPU interface
 interface GPU {
@@ -60,19 +60,23 @@ export default function GPUDetailPage() {
   const gpuId = params.gpuId as string;
   
   // Find the GPU by ID
-  const gpu = gpusData.find((g: any) => g.id === gpuId);
+  const gpuData = gpusData.find((g: any) => g.id === gpuId);
   
   // If GPU not found, return 404
-  if (!gpu) {
+  if (!gpuData) {
     notFound();
   }
   
-  // Fix image path
-  const imageUrl = gpu.image.startsWith('/') 
-    ? `${IMAGE_BASE_PATH}${gpu.image}` 
-    : gpu.image;
+  // Fix image path if needed
+  const gpu = {
+    ...gpuData,
+    image: gpuData.image.startsWith('/') ? gpuData.image : `/${gpuData.image}`
+  };
   
   const [imgError, setImgError] = useState(false);
+  
+  // Use the image from the GPU or a default if there's an error
+  const imageUrl = imgError || !gpu.image ? DEFAULT_IMAGE_PATH : gpu.image;
   
   return (
     <div className="space-y-8">
@@ -98,6 +102,8 @@ export default function GPUDetailPage() {
                 priority
                 className="w-full h-full object-cover"
                 onError={() => setImgError(true)}
+                sizes="(max-width: 768px) 100vw, 1200px"
+                quality={85}
               />
             )}
             

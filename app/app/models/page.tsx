@@ -9,10 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { ResponsiveTable, ResponsiveTableBody, ResponsiveTableRow, ResponsiveTableCell } from "../../../components/ui/responsive-table";
 import modelsData from "../../../data/models.json";
 
-// Base path for static assets in subdomains
-const IMAGE_BASE_PATH = "/";
-
-// Default image path
+// Simple image paths
 const DEFAULT_IMAGE_PATH = "/images/logo_mistral.png";
 
 // Define Model interface
@@ -29,12 +26,10 @@ interface Model {
   featured: boolean;
 }
 
-// Model data with improved image path handling
+// Model data with simple image path handling
 const models: Model[] = modelsData.map((model: any) => ({
   ...model,
-  image: model.image.startsWith('/') 
-    ? `${IMAGE_BASE_PATH}${model.image.substring(1)}` 
-    : model.image
+  image: model.image.startsWith('/') ? model.image : `/${model.image}`
 }));
 
 // Add debug logging
@@ -76,7 +71,7 @@ const ModelLogo = ({ src, alt, className = "", width = 96, height = 96 }: ModelL
   
   // Use the helper function for image URL with default fallback
   const imageUrl = imgError || !src || src === ""
-    ? `${IMAGE_BASE_PATH}${DEFAULT_IMAGE_PATH}`
+    ? `/${DEFAULT_IMAGE_PATH}`
     : src;
   
   return (
@@ -95,20 +90,28 @@ const ModelCard = ({ id, name, description, tags, parameters, image }: ModelCard
   
   // Create an absolute URL with default fallback
   const imageUrl = imgError || !image || image === "" 
-    ? `${IMAGE_BASE_PATH}${DEFAULT_IMAGE_PATH}`
+    ? DEFAULT_IMAGE_PATH
     : image;
 
   return (
     <div className="flex flex-col rounded-xl border border-border bg-card hover:border-primary/50 transition-colors overflow-hidden w-full h-full dark:bg-card">
       {/* Full-width top half image with absolutely no padding */}
       <div className="h-48 w-full bg-muted/50 overflow-hidden dark:bg-muted/30 relative">
-        <Image 
-          src={imageUrl} 
-          alt={name}
-          fill
-          className="object-cover"
-          onError={() => setImgError(true)}
-        />
+        {imgError ? (
+          <div className="flex items-center justify-center h-full w-full bg-muted">
+            <span className="text-3xl font-bold text-muted-foreground">{name.charAt(0)}</span>
+          </div>
+        ) : (
+          <Image 
+            src={imageUrl} 
+            alt={name}
+            fill
+            className="object-cover"
+            onError={() => setImgError(true)}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            quality={80}
+          />
+        )}
       </div>
       
       {/* Content section */}
@@ -125,7 +128,7 @@ const ModelCard = ({ id, name, description, tags, parameters, image }: ModelCard
         <div className="mt-auto pt-4">
           <Link 
             href={`/models/${id}`}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 w-full"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-9 px-4 py-2 w-full"
           >
             Use Model
           </Link>
@@ -348,7 +351,7 @@ export default function ModelsPage() {
                       onClick={() => handlePageChange(pageNumber)}
                       className={`w-8 h-8 rounded-md text-sm ${
                         currentPage === pageNumber
-                          ? "bg-primary text-primary-foreground"
+                          ? "bg-primary text-white"
                           : "border border-border bg-background text-foreground hover:bg-muted"
                       }`}
                     >

@@ -9,7 +9,7 @@ import { getMainUrl } from "../../lib/url-utils";
 // Countdown Timer Component
 function CountdownTimer() {
   // Set launch date to April 20, 2025
-  const launchDate = new Date("April 20, 2025").getTime();
+  const launchDate = new Date("May 20, 2025").getTime();
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -133,7 +133,7 @@ export function WhitelistOverlay({ topOffset = "top-0 md:top-[70px]" }: Whitelis
             href={getMainUrl('whitelist')}
             rel="noopener noreferrer"
           >
-            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white">
               Join the Whitelist
             </Button>
           </Link>

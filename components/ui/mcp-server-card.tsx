@@ -65,6 +65,8 @@ export function MCPServerCard({
             height={192}
             className="w-full h-full object-cover"
             onError={() => setImgError(true)}
+            sizes="(max-width: 768px) 100vw, 480px"
+            quality={85}
           />
         )}
       </div>

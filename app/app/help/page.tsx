@@ -97,7 +97,7 @@ export default function HelpPage() {
           </CardContent>
           <CardFooter>
             <Link 
-              href="/documentation" 
+              href="/help/documentation" 
               className="text-sm text-primary hover:underline flex items-center"
             >
               View Documentation
@@ -123,7 +123,7 @@ export default function HelpPage() {
           </CardContent>
           <CardFooter>
             <Link 
-              href="/community" 
+              href="/help/community" 
               className="text-sm text-primary hover:underline flex items-center"
             >
               Visit Community
@@ -149,7 +149,7 @@ export default function HelpPage() {
           </CardContent>
           <CardFooter>
             <Link 
-              href="/tutorials" 
+              href="/help/tutorials" 
               className="text-sm text-primary hover:underline flex items-center"
             >
               View Tutorials

@@ -7,8 +7,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { GpuCard } from "../../../components/ui/gpu-card";
 import gpusData from "../../../data/gpus.json";
 
-// Base path for static assets in subdomains
-const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "http://localhost:3000";
+// Simple base path for images
+const IMAGE_BASE_PATH = "";
+
+// GPU data with simple image path handling
+const gpus = gpusData.map((gpu) => ({
+  ...gpu,
+  image: gpu.image.startsWith('/') ? gpu.image : `/${gpu.image}`
+}));
 
 // Define GPU interface
 interface GPU {
@@ -40,14 +46,6 @@ interface GPU {
   image: string;
   featured: boolean;
 }
-
-// GPU data with improved image path handling
-const gpus: GPU[] = gpusData.map((gpu: any) => ({
-  ...gpu,
-  image: gpu.image.startsWith('/') 
-    ? `${IMAGE_BASE_PATH}${gpu.image}` 
-    : gpu.image
-}));
 
 // Categories for filtering
 const categories = [
@@ -142,7 +140,7 @@ export default function GPUsPage() {
               key={category.id}
               className={`px-3 py-2 rounded-md text-sm font-medium ${
                 activeCategory === category.id
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-white"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
               onClick={() => setActiveCategory(category.id)}

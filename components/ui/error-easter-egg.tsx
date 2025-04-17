@@ -43,7 +43,7 @@ export function ErrorEasterEgg({ error, reset, showDetails = false }: ErrorEaste
       {reset && (
         <button
           onClick={reset}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
         >
           Let's Try That Again
         </button>

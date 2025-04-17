@@ -129,7 +129,7 @@ const InferenceGrowthChart: React.FC = () => {
     g.append('path')
       .datum(growthData)
       .attr('fill', 'none')
-      .attr('stroke', '#FF4500')  // Primary color
+      .attr('stroke', '#002fa7')  // Primary color
       .attr('stroke-width', 3)
       .attr('d', line);
 
@@ -142,7 +142,7 @@ const InferenceGrowthChart: React.FC = () => {
 
     g.append('path')
       .datum(growthData)
-      .attr('fill', '#FF4500')
+      .attr('fill', '#002fa7')
       .attr('fill-opacity', 0.1)
       .attr('d', area);
 
@@ -156,7 +156,7 @@ const InferenceGrowthChart: React.FC = () => {
         .attr('cx', x)
         .attr('cy', y)
         .attr('r', 5)
-        .attr('fill', '#FF4500');
+        .attr('fill', '#002fa7');
     });
 
     // Add x-axis with years (only whole years)

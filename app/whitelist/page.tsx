@@ -216,7 +216,7 @@ export default function WhitelistPage() {
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="block text-sm font-medium">
-                      Email Address (Optional)
+                      Email Address (for launch updates)
                     </label>
                     <input
                       type="email"

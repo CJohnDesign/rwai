@@ -8,8 +8,8 @@ import { MCPServerCard } from "../../../components/ui/mcp-server-card";
 import mcpServersData from "../../../data/mcp-servers.json";
 import { WhitelistOverlay } from "../../../components/app-dashboard/whitelist-overlay";
 
-// Base path for static assets in subdomains
-const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "http://localhost:3000";
+// Simple base path for images
+const IMAGE_BASE_PATH = "";
 
 // Define MCP Server interface
 interface MCPServer {
@@ -41,12 +41,10 @@ interface MCPServer {
   updatedAt: string;
 }
 
-// MCP server data with improved image path handling
-const mcpServers: MCPServer[] = mcpServersData.map((server: any) => ({
+// MCP server data with simple image path handling
+const mcpServers = mcpServersData.map((server) => ({
   ...server,
-  image: server.image.startsWith('/') 
-    ? `${IMAGE_BASE_PATH}${server.image}` 
-    : server.image
+  image: server.image.startsWith('/') ? server.image : `/${server.image}`
 }));
 
 // Categories for filtering
@@ -125,7 +123,7 @@ export default function MCPPage() {
         </div>
         <Link 
           href="/mcp/create" 
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-10 px-4 py-2"
         >
           <Plus className="mr-2 h-4 w-4" />
           Create New Server
@@ -151,7 +149,7 @@ export default function MCPPage() {
               key={status.id}
               className={`px-3 py-2 rounded-md text-sm font-medium ${
                 activeStatus === status.id
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-white"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
               onClick={() => setActiveStatus(status.id)}

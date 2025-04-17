@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 const IMAGE_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 // Default image path
-const DEFAULT_IMAGE_PATH = "/images/logo-mistral.png";
+const DEFAULT_IMAGE_PATH = "/images/logo_mistral.png";
 
 // Define Model interface
 interface Model {
@@ -39,8 +39,6 @@ interface Model {
   image: string;
   featured: boolean;
 }
-
-
 
 // Format date function
 const formatDate = (isoDate: string) => {
@@ -91,6 +89,7 @@ export default function ModelDetailPage() {
   const modelId = params.modelId as string;
   const [model, setModel] = useState<Model | null>(null);
   const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
   
   // Add more debug logging
   console.log("Model ID from params:", modelId);
@@ -101,7 +100,12 @@ export default function ModelDetailPage() {
     console.log("Model found:", foundModel ? "yes" : "no");
     
     if (foundModel) {
-      setModel(foundModel as Model);
+      // Fix image path if needed
+      const modelWithFixedImage = {
+        ...foundModel,
+        image: foundModel.image.startsWith('/') ? foundModel.image : `/${foundModel.image}`
+      };
+      setModel(modelWithFixedImage as Model);
     }
     setLoading(false);
   }, [modelId]);
@@ -118,8 +122,8 @@ export default function ModelDetailPage() {
     return null;
   }
   
-  // Fix image path
-  const imagePath = `${IMAGE_BASE_PATH}${DEFAULT_IMAGE_PATH}`;
+  // Handle image path
+  const imagePath = imgError || !model.image ? DEFAULT_IMAGE_PATH : model.image;
   
   // Get category display name
   const getCategoryDisplay = (category: string) => {
@@ -143,7 +147,25 @@ export default function ModelDetailPage() {
       
       {/* Model header */}
       <div className="flex flex-col md:flex-row gap-6 items-start">
-        <ModelLogo src={imagePath} alt={model.name} />
+        <div className={`overflow-hidden rounded-lg bg-black`} style={{ width: 120, height: 120 }}>
+          {imgError ? (
+            <div className="flex items-center justify-center h-full w-full bg-muted">
+              <span className="text-3xl font-bold text-muted-foreground">{model.name.charAt(0)}</span>
+            </div>
+          ) : (
+            <Image
+              src={imagePath}
+              alt={model.name}
+              width={120}
+              height={120}
+              className="w-full h-full object-cover p-0"
+              priority={true}
+              onError={() => setImgError(true)}
+              sizes="120px"
+              quality={90}
+            />
+          )}
+        </div>
         
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{model.name}</h1>

@@ -25,7 +25,7 @@ const Features = () => {
     <section id="features" className="py-24 lg:px-48 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl mb-6">
+          <h2 className="text-3xl md:text-5xl mb-6 text-foreground">
             {/* Access <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-700"> */}
               Fully managed AI infrastructure
             {/* </span>  */}
@@ -41,8 +41,8 @@ const Features = () => {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-8">
-                <h3 className="text-xl mb-4 text-primary">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="text-xl mb-4 text-foreground">{feature.title}</h3>
+                <p className="text-foreground">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
