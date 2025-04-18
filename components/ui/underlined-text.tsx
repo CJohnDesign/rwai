@@ -1,15 +1,27 @@
 import React from 'react';
+import { AccentGradientText } from './accent-gradient-text';
 
 interface UnderlinedTextProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export function UnderlinedText({ children, className = "" }: UnderlinedTextProps) {
+export function UnderlinedText({ 
+  children, 
+  className = ""
+}: UnderlinedTextProps) {
+  // Use the new AccentGradientText component instead
   return (
-    <span className={`relative mx-2 ${className}`}>
+    <AccentGradientText 
+      className={className}
+      gradientFrom="var(--purple-500, #8b5cf6)"
+      gradientTo="var(--pink-500, #ec4899)"
+      showUnderline={true}
+    >
       {children}
-      <span className="absolute -bottom-1 left-0 w-full h-1 bg-primary -z-1"></span>
-    </span>
+    </AccentGradientText>
   );
-} 
+}
+
+// Export previous component name for backward compatibility
+export const UnderlinedText = AccentGradientText; 

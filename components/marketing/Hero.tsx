@@ -10,6 +10,8 @@ import { ShaderCanvas } from '../shaders/ShaderCanvas';
 import Inference from '../d3/Inference';
 import { UnderlinedText } from '../ui/underlined-text';
 import { HighlightText } from '../ui/highlight-text';
+import { GradientText } from '../ui/gradient-text';
+import { AccentGradientText } from '../ui/accent-gradient-text';
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
@@ -36,10 +38,19 @@ const Hero = () => {
               Ownership of
             </span>
             <span className="block text-4xl md:text-5xl lg:text-6xl leading-tight">
-              <HighlightText className="text-white">AI Infrastructure</HighlightText>
+              <GradientText 
+                className="text-white"
+                gradientFrom="var(--blue-500, #3b82f6)"
+                gradientTo="var(--cyan-400, #22d3ee)"
+              >AI Infrastructure</GradientText>
             </span>
             <span className="block text-4xl md:text-5xl lg:text-6xl leading-tight">
-              <HighlightText className="text-white">with RWA Tokenization</HighlightText>
+              <AccentGradientText
+                className="text-white"
+                gradientFrom="var(--purple-500, #8b5cf6)"
+                gradientTo="var(--pink-500, #ec4899)"
+                showUnderline={false}
+              >with RWA Tokenization</AccentGradientText>
             </span>
           </h1>
 

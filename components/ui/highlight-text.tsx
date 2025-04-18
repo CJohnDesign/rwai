@@ -1,4 +1,5 @@
 import React from 'react';
+import { GradientText } from './gradient-text';
 
 interface HighlightTextProps {
   children: React.ReactNode;
@@ -11,20 +12,17 @@ export function HighlightText({
   className = "",
   highlightColor = "var(--primary)"
 }: HighlightTextProps) {
+  // Use the new GradientText component instead
   return (
-    <span 
-      className={`inline leading-[1.4] ${className}`}
-      style={{
-        background: 'transparent',
-        boxShadow: `0.25em 0 0 ${highlightColor}, -0.25em 0 0 ${highlightColor}`,
-        boxDecorationBreak: 'clone',
-        WebkitBoxDecorationBreak: 'clone',
-        backgroundColor: highlightColor,
-        paddingTop: '0.1em',
-        paddingBottom: '0.1em'
-      }}
+    <GradientText 
+      className={className}
+      gradientFrom="var(--cyan-500, #06b6d4)"
+      gradientTo="var(--primary, #3b82f6)"
     >
       {children}
-    </span>
+    </GradientText>
   );
-} 
+}
+
+// Export previous component name for backward compatibility
+export const HighlightText = GradientText; 
