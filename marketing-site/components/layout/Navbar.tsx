@@ -83,6 +83,7 @@ const Navbar = () => {
           aria-hidden="true"
         />
         
+        
         {/* Drawer panel */}
         <div className="fixed inset-y-0 left-0 w-80 bg-white dark:bg-gray-900 shadow-xl transform transition duration-300 ease-in-out">
           {/* Header with logo and close button */}
