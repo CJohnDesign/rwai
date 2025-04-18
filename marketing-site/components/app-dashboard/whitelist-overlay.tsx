@@ -8,8 +8,8 @@ import { getMainUrl } from "../../lib/url-utils";
 
 // Countdown Timer Component
 function CountdownTimer() {
-  // Set launch date to April 20, 2025
-  const launchDate = new Date("April 20, 2025").getTime();
+  // Set launch date to May 20, 2025
+  const launchDate = new Date("May 20, 2025").getTime();
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,

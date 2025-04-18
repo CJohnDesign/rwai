@@ -20,9 +20,10 @@ const debounce = (fn: Function, ms = 300) => {
 
 export default function WhitelistPage() {
   const [formData, setFormData] = useState({
-    wallet_address: '',
+    twitter_handle: '',
     email: '',
-    twitter_verified: false
+    twitter_verified: false,
+    retweeted: false
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,7 +75,7 @@ export default function WhitelistPage() {
           'event_action': 'abandon',
           'form_id': 'whitelist-application',
           'form_type': 'whitelist',
-          'has_partial_data': !!(formData.wallet_address || formData.email)
+          'has_partial_data': !!(formData.twitter_handle || formData.email)
         });
       }
     };
@@ -134,11 +135,19 @@ export default function WhitelistPage() {
         .from('whitelist_applications')
         .insert([{
           email: formData.email || null,
-          wallet_address: formData.wallet_address,
-          twitter_verified: formData.twitter_verified
+          twitter_handle: formData.twitter_handle,
+          twitter_verified: formData.twitter_verified,
+          retweeted: formData.retweeted,
+          wallet_address: '' // Use empty string instead of null
         }]);
 
-      if (error) throw error;
+      if (error) {
+        // Check for duplicate email error
+        if (error.message?.includes('whitelist_applications_email_key')) {
+          throw new Error('This email has already been registered for the whitelist. Please use a different email address or continue without email.');
+        }
+        throw error;
+      }
 
       pushToDataLayer({
         'event': 'whitelist_submission',
@@ -154,9 +163,10 @@ export default function WhitelistPage() {
 
       setSubmitStatus({ success: true, error: null });
       setFormData({
-        wallet_address: '',
+        twitter_handle: '',
         email: '',
-        twitter_verified: false
+        twitter_verified: false,
+        retweeted: false
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -201,16 +211,16 @@ export default function WhitelistPage() {
               ) : (
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <label htmlFor="wallet_address" className="block text-sm font-medium">
-                      ETH Wallet Address <span className="text-red-500">*</span>
+                    <label htmlFor="twitter_handle" className="block text-sm font-medium">
+                      Twitter Handle <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      id="wallet_address"
-                      value={formData.wallet_address}
+                      id="twitter_handle"
+                      value={formData.twitter_handle}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      placeholder="Enter your ETH wallet address"
+                      placeholder="Enter your Twitter handle (e.g. @username)"
                       required
                     />
                   </div>
@@ -227,7 +237,7 @@ export default function WhitelistPage() {
                       placeholder="Enter your email address"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-4">
                     <label className="flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -239,6 +249,19 @@ export default function WhitelistPage() {
                       />
                       <span className="text-sm font-medium">
                         I have followed <a href="https://x.com/RWAi_xyz" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@RWAi_xyz</a> on X <span className="text-red-500">*</span>
+                      </span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="retweeted"
+                        checked={formData.retweeted}
+                        onChange={handleChange}
+                        className="rounded border-gray-300 text-primary focus:ring-primary"
+                        required
+                      />
+                      <span className="text-sm font-medium">
+                        I have <a href="https://x.com/RWAi_xyz/status/19129471659718374" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">retweeted this on X</a> (we will check 👀) <span className="text-red-500">*</span>
                       </span>
                     </label>
                   </div>
