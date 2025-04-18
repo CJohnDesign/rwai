@@ -247,7 +247,7 @@ export const Inference = () => {
       .data(links)
       .join("path")
       .attr("fill", "none")
-      .attr("stroke", "#002fa7")
+      .attr("stroke", "#073ABC")
       .attr("stroke-opacity", 0.8)
       .attr("stroke-width", 2)
       .attr("d", linkPath);
@@ -288,14 +288,14 @@ export const Inference = () => {
       // Create the dot with motion blur
       const dot = dotGroup.append("circle")
         .attr("r", 8)
-        .attr("fill", "#002fa7")
+        .attr("fill", "#073ABC")
         .attr("opacity", 0.9)
         .style("filter", "url(#motionBlur)");
 
       // Create a copy of the dot without blur for better visibility
       const dotOverlay = dotGroup.append("circle")
         .attr("r", 4)
-        .attr("fill", "#002fa7")
+        .attr("fill", "#073ABC")
         .attr("opacity", 1);
 
       // Find the actual paths we'll be using
@@ -442,7 +442,7 @@ export const Inference = () => {
       .style("padding", "8px 12px")
       .style("background", "rgba(0, 0, 0, 0.85)")
       .style("color", "white")
-      .style("border", "1px solid #002fa7")
+      .style("border", "1px solid #073ABC")
       .style("border-radius", "6px")
       .style("font-size", "14px")
       .style("pointer-events", "none")
@@ -459,7 +459,7 @@ export const Inference = () => {
       .attr("r", d => d.size || 45)
       .attr("data-id", d => d.id) // Add data-id for easier selection
       .style("fill", (d, i) => `url(#node-${i})`)
-      .style("stroke", "#002fa7")
+      .style("stroke", "#073ABC")
       .style("stroke-width", 1.25)
       .style("stroke-opacity", 0.8)
       .style("cursor", "pointer")

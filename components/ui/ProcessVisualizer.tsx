@@ -19,7 +19,7 @@ const ProcessVisualizer: React.FC = () => {
         </svg>
       ), 
       description: "Token holders purchase fractional ownership in AI GPU infrastructure",
-      color: "#002fa7" // Primary color
+      color: "#073ABC" // Primary color
     },
     { 
       title: "Deployment", 

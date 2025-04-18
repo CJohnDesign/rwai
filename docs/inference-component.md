@@ -69,7 +69,7 @@ animateAlongPath(userToLogoPath, dotGroup, 'logo-to-user', 250, () => {
           .attr("preserveAspectRatio", "xMidYMid slice");
         return `url(#${tempPatternId})`;
       })
-      .style("stroke", "#002fa7")
+      .style("stroke", "#073ABC")
       .style("stroke-width", 1.25)
       .style("stroke-opacity", 0.8)
       .style("opacity", 0);

@@ -1,6 +1,6 @@
 RWAi Brand Colors
 Primary Color
-Energetic Orange (#002fa7): Symbolizes data energy, creativity, and vibrancy.
+Energetic Orange (#073ABC): Symbolizes data energy, creativity, and vibrancy.
 Secondary Color
 Electric Purple (#9400FF): Represents innovation, AI, and computing intelligence.
 Neutral Base

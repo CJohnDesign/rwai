@@ -22,7 +22,9 @@ export default function WhitelistPage() {
   const [formData, setFormData] = useState({
     wallet_address: '',
     email: '',
-    twitter_verified: false
+    x_followed: false,
+    x_retweeted: false,
+    x_handle: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,7 +76,7 @@ export default function WhitelistPage() {
           'event_action': 'abandon',
           'form_id': 'whitelist-application',
           'form_type': 'whitelist',
-          'has_partial_data': !!(formData.wallet_address || formData.email)
+          'has_partial_data': !!(formData.wallet_address || formData.email || formData.x_handle)
         });
       }
     };
@@ -135,7 +137,9 @@ export default function WhitelistPage() {
         .insert([{
           email: formData.email || null,
           wallet_address: formData.wallet_address,
-          twitter_verified: formData.twitter_verified
+          x_followed: formData.x_followed,
+          x_retweeted: formData.x_retweeted,
+          x_handle: formData.x_handle || null
         }]);
 
       if (error) throw error;
@@ -148,7 +152,8 @@ export default function WhitelistPage() {
         'form_id': 'whitelist-application',
         'form_type': 'whitelist',
         'has_email': !!formData.email,
-        'has_twitter': formData.twitter_verified,
+        'has_x_followed': formData.x_followed,
+        'has_x_retweeted': formData.x_retweeted,
         'timestamp': new Date().toISOString()
       });
 
@@ -156,7 +161,9 @@ export default function WhitelistPage() {
       setFormData({
         wallet_address: '',
         email: '',
-        twitter_verified: false
+        x_followed: false,
+        x_retweeted: false,
+        x_handle: ''
       });
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -173,9 +180,12 @@ export default function WhitelistPage() {
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-                Join the <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-700">
-                  RWAi Whitelist
+              <h1 className="tracking-tight animate-slide-up font-normal">
+                <span className="md:text-5xl font-bold mb-6 animate-fade-in text-gray-100 leading-tight">
+                  Join the&nbsp;
+                </span>
+                <span className="md:text-5xl font-bold mb-6 animate-fade-in text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 dark:from-blue-300 dark:to-blue-500 leading-tight">
+                   RWAi Whitelist
                 </span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8 animate-slide-up animation-delay-200">
@@ -183,11 +193,7 @@ export default function WhitelistPage() {
               </p>
             </div>
             <div className="max-w-2xl mx-auto bg-card rounded-xl p-8 border border-border shadow-lg animate-slide-up animation-delay-300">
-              {supabaseError ? (
-                <div className="text-center py-8">
-                  <ErrorEasterEgg />
-                </div>
-              ) : submitStatus.success ? (
+              {submitStatus.success ? (
                 <div className="text-center py-8">
                   <h3 className="text-2xl font-bold text-green-500 mb-4">Application Submitted!</h3>
                   <p className="mb-6">Thank you for your interest in RWAi. We'll be in touch soon.</p>
@@ -200,6 +206,11 @@ export default function WhitelistPage() {
                 </div>
               ) : (
                 <form className="space-y-6" onSubmit={handleSubmit}>
+                  {supabaseError && (
+                    <div className="text-sm text-amber-500 mb-4">
+                      Note: {supabaseError} Form submission will be simulated in development.
+                    </div>
+                  )}
                   <div className="space-y-2">
                     <label htmlFor="wallet_address" className="block text-sm font-medium">
                       ETH Wallet Address <span className="text-red-500">*</span>
@@ -228,17 +239,46 @@ export default function WhitelistPage() {
                     />
                   </div>
                   <div className="space-y-2">
+                    <label htmlFor="x_handle" className="block text-sm font-medium">
+                      X Handle
+                    </label>
+                    <input
+                      type="text"
+                      id="x_handle"
+                      value={formData.x_handle}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      placeholder="e.g. @RWAi_xyz"
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <label className="flex items-center space-x-2">
                       <input
                         type="checkbox"
-                        id="twitter_verified"
-                        checked={formData.twitter_verified}
+                        id="x_followed"
+                        checked={formData.x_followed}
                         onChange={handleChange}
                         className="rounded border-gray-300 text-primary focus:ring-primary"
                         required
                       />
                       <span className="text-sm font-medium">
                         I have followed <a href="https://x.com/RWAi_xyz" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@RWAi_xyz</a> on X <span className="text-red-500">*</span>
+                      </span>
+                    </label>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="x_retweeted"
+                        checked={formData.x_retweeted}
+                        onChange={handleChange}
+                        className="rounded border-gray-300 text-primary focus:ring-primary"
+                        required
+                      />
+                      <span className="text-sm font-medium">
+                        I have retweeted the <a href="https://x.com/RWAi_xyz/status/1912947165971837418" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">pinned post</a> <span className="text-red-500">*</span>
+                        <span className="ml-1 text-xs italic text-muted-foreground">(yes, we actually check 👀)</span>
                       </span>
                     </label>
                   </div>
