@@ -137,9 +137,8 @@ export default function WhitelistPage() {
         .insert([{
           email: formData.email || null,
           wallet_address: formData.wallet_address,
-          x_followed: formData.x_followed,
-          x_retweeted: formData.x_retweeted,
-          x_handle: formData.x_handle || null
+          twitter_verified: formData.x_followed,
+          ...(formData.x_handle ? { notes: `X Handle: ${formData.x_handle}, Retweeted: ${formData.x_retweeted}` } : {})
         }]);
 
       if (error) throw error;
