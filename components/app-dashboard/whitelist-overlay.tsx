@@ -133,7 +133,7 @@ export function WhitelistOverlay({ topOffset = "top-0 md:top-[70px]" }: Whitelis
             href={getMainUrl('whitelist')}
             rel="noopener noreferrer"
           >
-            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white">
+            <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
               Join the Whitelist
             </Button>
           </Link>

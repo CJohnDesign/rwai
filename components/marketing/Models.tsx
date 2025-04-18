@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { Button } from '../ui/button';
 import { ChevronRight } from 'lucide-react';
 import { getAppUrl, isVercel } from '../../lib/url-utils';
-import { UnderlinedText } from '../ui/underlined-text';
 
 // Define model type
 interface ModelType {
@@ -105,10 +104,10 @@ const Models = () => {
             <span className="text-gray-900 dark:text-white">Access Open Source models that</span>
             <br />
             <span className="text-gray-900 dark:text-white">Power the </span>
-            <UnderlinedText className="text-foreground mx-0">AI Revolution</UnderlinedText>
+            <span className="text-primary">AI Revolution</span>
           </h2>
           
-          <Button asChild variant="outline" className="self-start md:self-auto border-primary text-foreground dark:text-white hover:bg-primary/10 hover:text-foreground rounded-full px-6">
+          <Button asChild variant="outline" className="self-start md:self-auto border-gray-300 dark:border-gray-700 rounded-full px-6">
             <a href={getAppUrl('models')} className="flex items-center gap-2">
               View Models
               <ChevronRight className="h-4 w-4" />

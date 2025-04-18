@@ -8,10 +8,6 @@ import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { ShaderCanvas } from '../shaders/ShaderCanvas';
 import Inference from '../d3/Inference';
-import { UnderlinedText } from '../ui/underlined-text';
-import { HighlightText } from '../ui/highlight-text';
-import { GradientText } from '../ui/gradient-text';
-import { AccentGradientText } from '../ui/accent-gradient-text';
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
@@ -31,26 +27,17 @@ const Hero = () => {
         {/* Left Column - All Content */}
         <div className="lg:col-span-5 lg:flex lg:flex-col lg:justify-center space-y-4 order-2 lg:order-1 mt-8 lg:mt-0">
           <h1 className="tracking-tight animate-slide-up font-normal">
-            <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight mb-1">
+            <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight">
               Decentralizing
             </span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight mb-1">
+            <span className="block text-4xl md:text-5xl lg:text-6xl text-gray-100 leading-tight">
               Ownership of
             </span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl leading-tight">
-              <GradientText 
-                className="text-white"
-                gradientFrom="var(--blue-500, #3b82f6)"
-                gradientTo="var(--cyan-400, #22d3ee)"
-              >AI Infrastructure</GradientText>
+            <span className="block text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 dark:from-blue-300 dark:to-blue-500 leading-tight">
+              AI Infrastructure
             </span>
-            <span className="block text-4xl md:text-5xl lg:text-6xl leading-tight">
-              <AccentGradientText
-                className="text-white"
-                gradientFrom="var(--purple-500, #8b5cf6)"
-                gradientTo="var(--pink-500, #ec4899)"
-                showUnderline={false}
-              >with RWA Tokenization</AccentGradientText>
+            <span className="block text-4xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 dark:from-purple-300 dark:via-pink-400 dark:to-red-400 leading-tight">
+              with RWA Tokenization
             </span>
           </h1>
 
@@ -65,8 +52,8 @@ const Hero = () => {
                 size="lg" 
                 variant="default"
                 className={cn(
-                  "group relative overflow-hidden border-primary text-foreground hover:bg-primary/10",
-                  "transition-all duration-300 ease-out shadow-md hover:shadow-lg backdrop-blur-sm rounded-full"
+                  "group relative overflow-hidden bg-gray-900/80 text-white hover:bg-gray-800 dark:bg-gray-800/80 dark:hover:bg-gray-700",
+                  "transition-all duration-300 ease-out shadow-md hover:shadow-lg backdrop-blur-sm"
                 )}
               >
                 <a href="#models" className="px-8 flex items-center gap-1">
