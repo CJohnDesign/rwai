@@ -131,6 +131,20 @@ export default function WhitelistPage() {
         throw new Error('Database connection is not available. Please try again later.');
       }
 
+      // First check if Twitter handle already exists
+      const { data: existingUser } = await supabase
+        .from('whitelist_applications')
+        .select('twitter_handle')
+        .eq('twitter_handle', formData.twitter_handle)
+        .single();
+
+      if (existingUser) {
+        throw new Error('This Twitter handle has already been registered for the whitelist. Please use a different Twitter handle.');
+      }
+
+      // Generate a unique random string for wallet_address
+      const uniqueId = `twitter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
       const { data, error } = await supabase
         .from('whitelist_applications')
         .insert([{
@@ -138,13 +152,17 @@ export default function WhitelistPage() {
           twitter_handle: formData.twitter_handle,
           twitter_verified: formData.twitter_verified,
           retweeted: formData.retweeted,
-          wallet_address: '' // Use empty string instead of null
+          wallet_address: uniqueId // Use a unique generated ID instead of empty string
         }]);
 
       if (error) {
         // Check for duplicate email error
         if (error.message?.includes('whitelist_applications_email_key')) {
           throw new Error('This email has already been registered for the whitelist. Please use a different email address or continue without email.');
+        }
+        // Check for duplicate twitter handle error (just in case of race condition)
+        if (error.message?.includes('whitelist_applications_twitter_handle_key')) {
+          throw new Error('This Twitter handle has already been registered for the whitelist. Please use a different Twitter handle.');
         }
         throw error;
       }
@@ -261,7 +279,7 @@ export default function WhitelistPage() {
                         required
                       />
                       <span className="text-sm font-medium">
-                        I have <a href="https://x.com/RWAi_xyz/status/19129471659718374" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">retweeted this on X</a> (we will check 👀) <span className="text-red-500">*</span>
+                        I have <a href="https://x.com/RWAi_xyz/status/1912947165971837418" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">retweeted this on X</a> (we will check 👀) <span className="text-red-500">*</span>
                       </span>
                     </label>
                   </div>
