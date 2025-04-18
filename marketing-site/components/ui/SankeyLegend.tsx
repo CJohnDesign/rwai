@@ -14,7 +14,7 @@ interface SankeyLegendProps {
 
 const SankeyLegend: React.FC<SankeyLegendProps> = ({ className = '' }) => {
   const legendItems: LegendItem[] = [
-    { category: 'investors', color: '#FF4500', label: 'Investors' },
+    { category: 'investors', color: '#073ABC', label: 'Investors' },
     { category: 'platform', color: '#3B82F6', label: 'Platform' },
     { category: 'infrastructure', color: '#10B981', label: 'Infrastructure' },
     { category: 'services', color: '#8B5CF6', label: 'Services' },

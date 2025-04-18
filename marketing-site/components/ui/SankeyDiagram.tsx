@@ -105,7 +105,7 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({
       .attr('width', (d: any) => d.x1 - d.x0)
       .attr('fill', (d: any) => {
         const categoryColors: Record<string, string> = {
-          investors: '#FF4500',
+          investors: '#073ABC',
           platform: '#3B82F6',
           infrastructure: '#10B981',
           services: '#8B5CF6',

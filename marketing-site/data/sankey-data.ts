@@ -53,12 +53,12 @@ export const sankeyData: SankeyData = {
   
   links: [
     // Investment inflows - simplified to make values clearer
-    { source: "Retail Investors", target: "Token Sale", value: 40, color: "#FF4500" },
-    { source: "Institutional Investors", target: "Token Sale", value: 40, color: "#FF4500" },
-    { source: "Treasury", target: "Token Sale", value: 20, color: "#FF4500" },
+    { source: "Retail Investors", target: "Token Sale", value: 40, color: "#073ABC" },
+    { source: "Institutional Investors", target: "Token Sale", value: 40, color: "#073ABC" },
+    { source: "Treasury", target: "Token Sale", value: 20, color: "#073ABC" },
     
     // Token sale to platform - total 100
-    { source: "Token Sale", target: "RWAi Platform", value: 100, color: "#FF4500" },
+    { source: "Token Sale", target: "RWAi Platform", value: 100, color: "#073ABC" },
     
     // Platform to infrastructure - total 100
     { source: "RWAi Platform", target: "GPU Acquisition", value: 60, color: "#3B82F6" },

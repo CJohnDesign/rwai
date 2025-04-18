@@ -26,7 +26,7 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl mb-6">
-            Access <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-700">
+            Access <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary-foreground">
               Fully managed AI infrastructure
             </span> converted to RWA opportunity
           </h2>

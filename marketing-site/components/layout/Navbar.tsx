@@ -62,9 +62,12 @@ const Navbar = () => {
               fgColor="currentColor"
               className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
             />
-            <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-              <a href={getAppUrl('models')}>
-                <span className="hidden md:inline -mr-[3px]">Launch</span>App
+            <Button 
+              asChild 
+              className="bg-gradient-to-r from-[#073ABC] to-[#002fa7] hover:from-[#073ABC]/90 hover:to-[#002fa7]/90 text-white border-0 shadow-[0_0_15px_rgba(7,58,188,0.5)]"
+            >
+              <a href={getAppUrl('models')} className="flex items-center">
+                <span className="hidden md:inline -mr-1">Launch </span>App
               </a>
             </Button>
           </div>

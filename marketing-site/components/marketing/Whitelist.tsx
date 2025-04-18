@@ -10,7 +10,7 @@ const Whitelist = () => {
           <div className="space-y-8">
             
             <h2 className="text-3xl md:text-5xl leading-tight animate-slide-up text-white">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary-foreground">
                 Fractional Ownership of GPU Infrastructure
               </span>
             </h2>
