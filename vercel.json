@@ -1,8 +1,9 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "cd marketing-site && npm run build",
-  "outputDirectory": "marketing-site/.next",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "rootDirectory": "marketing-site",
   "headers": [
     {
       "source": "/(.*)",
