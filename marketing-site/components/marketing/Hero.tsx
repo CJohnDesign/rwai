@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '../ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowRight } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   // Safe client-side theme detection
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -41,17 +41,22 @@ const Hero = () => {
         <div className="flex flex-col justify-center space-y-8 animate-fade-in animation-delay-200">
           <div className="space-y-6">
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              RWAi is the first platform where anyone can access, own, and earn passive income from state-of-the-art AI Rigs that run top open-source models like DeepSeek & Llama, delivering inference and other AI optimized compute services to a high demand market.
+              RWAi is the first platform where anyone can purchase fractional
+              ownership and earn passive yield from tokenized AI GPU rigs that
+              run top open-source models like DeepSeek and Llama at state of the
+              art AI data centers delivering inference and other AI compute
+              services.
             </p>
-            
+
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              By 2028, the AI infrastructure market is expected to reach $1 trillion, RWAi is positioned to capture this explosive growth.
+              By 2028, the AI infrastructure market is expected to reach $1
+              trillion, RWAi is positioned to capture this explosive growth.
             </p>
 
             <div className="pt-4">
-              <Button 
-                asChild 
-                size="lg" 
+              <Button
+                asChild
+                size="lg"
                 variant="default"
                 className={cn(
                   "group relative overflow-hidden bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700",
@@ -84,4 +89,4 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+export default Hero;
