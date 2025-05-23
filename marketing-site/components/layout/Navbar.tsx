@@ -67,7 +67,7 @@ const Navbar = () => {
               href="https://formation.cloud"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 dark:text-gray-300 hover:text-primary font-black dark:hover:text-[#0A84FF] text-md transition-colors flex items-center gap-2"
+              className="text-gray-700 dark:text-gray-300 hidden md:flex hover:text-primary font-black dark:hover:text-[#0A84FF] text-md transition-colors items-center gap-2"
             >
               Formation
               <ExternalLink className="w-4 h-4 font-black" />
@@ -236,6 +236,16 @@ const Navbar = () => {
                   Follow us on X
                 </a>
               </div>
+              <Link
+                href="https://formation.cloud"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+              >
+                <Button variant="link" className="p-0">
+                  Formation
+                </Button>
+              </Link>
             </div>
           </div>
 
